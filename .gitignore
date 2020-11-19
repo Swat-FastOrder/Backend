@@ -4,7 +4,6 @@
 .history
 .env
 orm.config.json
-git
 
 ### yarn ###
 # https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
