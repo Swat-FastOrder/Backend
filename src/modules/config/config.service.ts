@@ -7,7 +7,7 @@ export class ConfigService {
   constructor() {
     const isDevelopment = process.env.NODE_ENV !== 'production';
     if (isDevelopment) {
-      const envFilePath = __dirname + '/../../.env';
+      const envFilePath = __dirname + '/../../../.env';
       const existsPath = fs.existsSync(envFilePath);
       if (!existsPath) {
         console.log('.env file does not exist');
@@ -16,7 +16,7 @@ export class ConfigService {
       this.envConfig = parse(fs.readFileSync(envFilePath));
     } else {
       this.envConfig = {
-        PORT: process.env.PORT,
+        PORT: process.env.APP_PORT,
       };
     }
   }

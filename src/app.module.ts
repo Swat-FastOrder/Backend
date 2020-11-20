@@ -1,19 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigEnum } from './config/config.enum';
-import { ConfigModule } from './config/config.module';
-import { ConfigService } from './config/config.service';
-import { DatabaseModule } from './database/database.module';
+import { ConfigEnum } from './modules/config/config.enum';
+import { ConfigModule } from './modules/config/config.module';
+import { ConfigService } from './modules/config/config.service';
+import { DatabaseModule } from './modules/database/database.module';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule, DatabaseModule, UserModule, AuthModule],
 })
 export class AppModule {
   static PORT: number | string;
   constructor(private readonly _configService: ConfigService) {
-    AppModule.PORT = _configService.get(ConfigEnum.PORT);
+    AppModule.PORT = _configService.get(ConfigEnum.APP_PORT);
   }
 }
