@@ -9,9 +9,9 @@
     "src/modules/*/*.entity{.ts,.js}"
   ],
   "migrations": [
-    "src/database/migrations/*{.ts,.js}"
+    "src/modules/database/migrations/*{.ts,.js}"
   ],
   "cli": {
-    "migrationsDir": "src/database/migrations"
+    "migrationsDir": "src/modules/database/migrations"
   }
 }
