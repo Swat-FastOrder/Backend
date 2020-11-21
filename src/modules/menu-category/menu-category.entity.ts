@@ -6,7 +6,7 @@ export class MenuCategory extends BaseEntity {
   id: number;
   @Column({ type: 'varchar', name: 'name', length: 50 })
   name: string;
-  @Column({ name: 'author_id', nullable: true })
+  @Column({ name: 'author_id', nullable: false })
   authorId: number;
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

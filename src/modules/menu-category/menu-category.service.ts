@@ -26,12 +26,7 @@ export class MenuCategoryService {
     if (menuCategory) throw new ConflictException('menu_category_name_already_exists');
 
     const theMenuCategory = plainToClass(MenuCategory, newMenuCategory);
-    const timestamps = new Date();
-
-    theMenuCategory.createdAt = timestamps;
-    theMenuCategory.updatedAt = timestamps;
     theMenuCategory.authorId = 1;
-
     return plainToClass(ResponseMenuCategoryDto, await theMenuCategory.save());
   }
 
@@ -41,7 +36,6 @@ export class MenuCategoryService {
     if (!menuCategory) throw new ConflictException('menu_category_was_not_found');
 
     menuCategory.name = updateMenuCategoryDto.name;
-    menuCategory.updatedAt = new Date();
 
     return plainToClass(ResponseMenuCategoryDto, await menuCategory.save());
   }
