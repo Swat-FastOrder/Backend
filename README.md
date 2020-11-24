@@ -66,7 +66,8 @@ $ npm run test:cov
 docker-compose down
 docker-compose up -d postgres
 docker-compose build api
-docker-compose up api
+docker-compose up -d api
+docker-compose exec api npm run migration:run
 ```
 
 ## Support
