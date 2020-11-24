@@ -68,9 +68,7 @@ export class AuthService {
       .has()
       .lowercase() // Must have lowercase letters
       .has()
-      .digits() // Must have at least 2 digits
-      // .has()
-      // .symbols() // Must have symbols
+      .digits() // Must have digits
       .has()
       .not()
       .spaces();
