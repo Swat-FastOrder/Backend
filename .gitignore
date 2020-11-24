@@ -3,7 +3,7 @@
 /node_modules
 .history
 .env
-orm.config.json
+#orm.config.json
 
 ### yarn ###
 # https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
