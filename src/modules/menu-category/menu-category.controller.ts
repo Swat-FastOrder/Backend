@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Put, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { MenuCategoryService } from './menu-category.service';
 import { CreateMenuCategoryDto } from './dto/create-menu-category.dto';
 import { UpdateMenuCategoryDto } from './dto/update-menu-category.dto';
@@ -34,7 +42,10 @@ export class MenuCategoryController {
   @ApiOperation({ summary: 'Update menu category' })
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
-  update(@Param('id') id: number, @Body() updateMenuCategoryDto: UpdateMenuCategoryDto) {
+  update(
+    @Param('id') id: number,
+    @Body() updateMenuCategoryDto: UpdateMenuCategoryDto,
+  ) {
     return this._menuCategoryService.update(id, updateMenuCategoryDto);
   }
 }

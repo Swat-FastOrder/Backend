@@ -7,6 +7,6 @@ import { MenuCategoryRepository } from './menu-category.respository';
 @Module({
   imports: [TypeOrmModule.forFeature([MenuCategoryRepository])],
   controllers: [MenuCategoryController],
-  providers: [MenuCategoryService]
+  providers: [MenuCategoryService],
 })
 export class MenuCategoryModule {}
