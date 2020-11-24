@@ -5,6 +5,9 @@
   "host": "ec2-52-21-0-111.compute-1.amazonaws.com",
   "port": 5432,
   "database": "d4gd3o6p9j62mm",
+  "ssl": {
+    "rejectUnauthorized": false
+},
   "entities": [
     "src/modules/*/*.entity{.ts,.js}"
   ],
