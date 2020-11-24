@@ -10,7 +10,6 @@ import { IJwtPayload } from './interfaces/jwt-payload.interface';
 import { plainToClass } from 'class-transformer';
 import PasswordValidator = require('password-validator');
 import { SigninResponseDto } from './dtos/signin-response.dto';
-import { ConfigService } from '../config/config.service';
 import { UserRepository } from '../user/user.repository';
 import { SigninDto } from './dtos/signin.dto';
 import { SignChangeDto } from './dtos/signchange.dto';
@@ -61,7 +60,7 @@ export class AuthService {
     const schema = new PasswordValidator();
     schema
       .is()
-      .min(10) // Minimum length 10
+      .min(8) // Minimum length 10
       .is()
       .max(20) // Maximum length 20
       .has()
@@ -69,9 +68,7 @@ export class AuthService {
       .has()
       .lowercase() // Must have lowercase letters
       .has()
-      .digits() // Must have at least 2 digits
-      .has()
-      .symbols() // Must have symbols
+      .digits() // Must have digits
       .has()
       .not()
       .spaces();
