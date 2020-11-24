@@ -1,10 +1,10 @@
 {
   "type": "postgres",
-  "username": "username",
-  "password": "password",
-  "host": "localhost",
+  "username": "bntsakepufabmy",
+  "password": "a9767d53059714c3a0dcb77be78b0cb49785e7c7da77a17d9f46bc29935cba31",
+  "host": "ec2-52-21-0-111.compute-1.amazonaws.com",
   "port": 5432,
-  "database": "postgres",
+  "database": "d4gd3o6p9j62mm",
   "entities": [
     "src/modules/*/*.entity{.ts,.js}"
   ],
