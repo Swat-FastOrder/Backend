@@ -24,14 +24,17 @@ export class MenuDish extends BaseEntity {
   @Column({ type: 'boolean', name: 'is_recommended' })
   isRecommended: boolean;
 
-  @Column({ type: 'boolean', name: 'disabled' })
-  disabled: boolean;
+  @Column({ type: 'boolean', name: 'is_active' })
+  isActive: boolean;
 
   @Column({ type: 'float', name: 'price' })
   price: number;
 
   @Column({ type: 'varchar', name: 'image_url', length: 255 })
   imageUrl: string;
+
+  @Column({ name: 'author_id', nullable: true })
+  authorId: number;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

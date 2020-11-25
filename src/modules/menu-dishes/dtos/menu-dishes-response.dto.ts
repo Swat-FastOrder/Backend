@@ -18,13 +18,16 @@ export class MenuDishesResponseDto {
   isRecommended: boolean;
 
   @Expose()
-  disabled: boolean;
+  isActive: boolean;
 
   @Expose()
   price: number;
 
   @Expose()
   imageUrl: string;
+
+  @Expose()
+  authorId: number;
 
   @Expose()
   createdAt: Date;

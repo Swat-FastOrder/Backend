@@ -17,6 +17,13 @@ export class MenuDishesCreateDto {
   )
   categoryId: number;
 
+  @ApiProperty({ description: 'Menu dish author', required: true })
+  @IsNumber(
+    { allowNaN: false, allowInfinity: false },
+    { message: 'menu-dishes_author_id_required' },
+  )
+  authorId: number;
+
   @ApiProperty({ description: 'Menu dish category', required: true })
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
