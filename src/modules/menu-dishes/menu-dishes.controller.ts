@@ -22,7 +22,6 @@ import { extname } from 'path';
 @ApiTags('Menu dishes')
 @Controller('menu-dishes')
 export class MenuDishesController {
-  serverUrl = 'http://localhost:3000/';
   constructor(private readonly _menuDishesService: MenuDishesService) {}
 
   @Get()
@@ -77,9 +76,9 @@ export class MenuDishesController {
     }),
   )
   uploadImage(@Param('dishId') dishId, @UploadedFile() file) {
-    this._menuDishesService.uploadDishImage(
+    return this._menuDishesService.uploadDishImage(
       Number(dishId),
-      `${this.serverUrl}${file.path}`,
+      `/${file.path}`,
     );
   }
 }
