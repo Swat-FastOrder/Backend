@@ -16,7 +16,7 @@ export class Table extends BaseEntity {
   @Column({
     type: 'boolean',
     name: 'is_active',
-    default: false,
+    default: true,
     nullable: false,
   })
   isActive: boolean;

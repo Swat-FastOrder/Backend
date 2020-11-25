@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { Not } from 'typeorm';
 import { CreateTableDto } from './dto/create-table.dto';
 import { ResponseTableDto } from './dto/response-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
@@ -43,12 +44,11 @@ export class TableService {
     //Query to get a table with the name to update to compare if the name is already taken
     const storedTable = await this._tableRepository.findOne({
       name: updateTableDto.name,
+      id: Not(id)
     });
 
     if (storedTable) {
-      if (storedTable.id != table.id) {
         throw new ConflictException('table_name_has_already_been_taken');
-      }
     }
 
     table.name = updateTableDto.name;
