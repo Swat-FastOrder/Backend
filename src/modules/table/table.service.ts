@@ -7,7 +7,7 @@ import { Table } from './table.entity';
 import { TableRepository } from './table.repository';
 
 @Injectable()
-export class TablesService {
+export class TableService {
   constructor(private readonly _tableRepository: TableRepository) {}
 
   async create(createTable: CreateTableDto) {

@@ -6,7 +6,7 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
-import { TablesModule } from './modules/tables/tables.module';
+import { TableModule } from './modules/table/table.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { TablesModule } from './modules/tables/tables.module';
     UserModule,
     AuthModule,
     MenuCategoryModule,
-    TablesModule,
+    TableModule,
   ],
 })
 export class AppModule {
