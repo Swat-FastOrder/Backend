@@ -15,5 +15,6 @@ services:
       - .env
     ports:
       - '3000:3000'
+    entrypoint: ['/bin/bash', './entrypoint.sh']
     depends_on:
       - postgres
