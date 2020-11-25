@@ -15,9 +15,7 @@ export const databaseProviders = [
         password: config.get(ConfigEnum.POSTGRES_PASSWORD),
         database: config.get(ConfigEnum.POSTGRES_DB),
         logging: false,
-        ssl: {
-          rejectUnauthorized: false,
-        },
+        ssl: config.get(ConfigEnum.POSTGRES_SSL),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
       } as ConnectionOptions;

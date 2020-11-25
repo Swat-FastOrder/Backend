@@ -21,6 +21,7 @@ export class ConfigService {
         POSTGRES_USER: process.env.POSTGRES_USER,
         POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
         POSTGRES_DB: process.env.POSTGRES_DB,
+        POSTGRES_SSL: process.env.POSTGRES_SSL,
         JWT_SECRET: process.env.JWT_SECRET,
       };
     }
