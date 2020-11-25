@@ -58,12 +58,12 @@ export class MenuDishesController {
 
   @Get('dishes-images/:fileId')
   async serveDishImage(@Param('fileId') fileId, @Res() res): Promise<any> {
-    res.sendFile(fileId, { root: 'avatars' });
+    res.sendFile(fileId, { root: 'dishes-images' });
   }
 
   @Post(':dishId/image')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FileInterceptor('image', {
       storage: diskStorage({
         destination: './dishes-images',
         filename: (req, file, cb) => {

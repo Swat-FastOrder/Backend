@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
 import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -16,6 +17,9 @@ import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
     AuthModule,
     MenuCategoryModule,
     MenuDishesModule,
+    MulterModule.register({
+      dest: './dishes-images',
+    }),
   ],
 })
 export class AppModule {
