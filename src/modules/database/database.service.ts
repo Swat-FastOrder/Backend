@@ -14,11 +14,10 @@ export const databaseProviders = [
         username: config.get(ConfigEnum.POSTGRES_USER),
         password: config.get(ConfigEnum.POSTGRES_PASSWORD),
         database: config.get(ConfigEnum.POSTGRES_DB),
-        port: config.get(ConfigEnum.POSTGRES_PORT),
         logging: false,
         ssl: {
           rejectUnauthorized: false,
-      },
+        },
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
       } as ConnectionOptions;
