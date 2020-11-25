@@ -8,11 +8,13 @@ import {
   UseInterceptors,
   Res,
   UploadedFile,
+  Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MenuDishesCreateDto } from './dtos/menu-dishes-create.dto';
+import { MenuDishUpdateDto } from './dtos/menu-dishes-update.dto';
 import { MenuDishesService } from './menu-dishes.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -42,6 +44,16 @@ export class MenuDishesController {
   @ApiOperation({ summary: 'Create a new menu dish' })
   create(@Body() newDish: MenuDishesCreateDto) {
     return this._menuDishesService.create(newDish);
+  }
+
+  @Put(':dishId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Update a menu dish by id' })
+  update(
+    @Param('dishId') dishId: number,
+    @Body() menuDishUpdateDto: MenuDishUpdateDto,
+  ) {
+    return this._menuDishesService.update(dishId, menuDishUpdateDto);
   }
 
   @Get('dishes-images/:fileId')
