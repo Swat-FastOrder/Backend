@@ -16,7 +16,7 @@ export class ConfigService {
       this.envConfig = parse(fs.readFileSync(envFilePath));
     } else {
       this.envConfig = {
-        PORT: process.env.APP_PORT,
+        APP_PORT: process.env.APP_PORT,
         POSTGRES_HOST: process.env.POSTGRES_HOST,
         POSTGRES_USER: process.env.POSTGRES_USER,
         POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
