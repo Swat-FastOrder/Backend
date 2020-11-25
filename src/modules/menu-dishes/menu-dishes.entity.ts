@@ -21,7 +21,7 @@ export class MenuDish extends BaseEntity {
   @Column({ name: 'category_id', nullable: true })
   categoryId: number;
 
-  @Column({ type: 'boolean', name: 'category_id' })
+  @Column({ type: 'boolean', name: 'is_recommended' })
   isRecommended: boolean;
 
   @Column({ type: 'boolean', name: 'disabled' })
