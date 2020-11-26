@@ -8,8 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TableService } from './table.service';
-import { TableCreateDto } from './dto/create-table.dto';
-import { TableUpdateDto } from './dto/update-table.dto';
+import { TableCreateDto } from './dto/table-create.dto';
+import { TableUpdateDto } from './dto/table-update.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 

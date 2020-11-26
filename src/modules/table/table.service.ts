@@ -1,9 +1,9 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Not } from 'typeorm';
-import { TableCreateDto } from './dto/create-table.dto';
-import { TableResponseDto } from './dto/response-table.dto';
-import { TableUpdateDto } from './dto/update-table.dto';
+import { TableCreateDto } from './dto/table-create.dto';
+import { TableResponseDto } from './dto/table-response.dto';
+import { TableUpdateDto } from './dto/table-update.dto';
 import { Table } from './table.entity';
 import { TableRepository } from './table.repository';
 
