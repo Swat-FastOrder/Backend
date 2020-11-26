@@ -6,10 +6,17 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
-import { OrderModule } from './order/order.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, UserModule, AuthModule, MenuCategoryModule, OrderModule],
+  imports: [
+    ConfigModule,
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    MenuCategoryModule,
+    OrderModule,
+  ],
 })
 export class AppModule {
   static PORT: number | string;
