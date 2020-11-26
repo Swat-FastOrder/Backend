@@ -44,11 +44,11 @@ export class TableService {
     //Query to get a table with the name to update to compare if the name is already taken
     const storedTable = await this._tableRepository.findOne({
       name: TableUpdateDto.name,
-      id: Not(id)
+      id: Not(id),
     });
 
     if (storedTable) {
-        throw new ConflictException('table_name_has_already_been_taken');
+      throw new ConflictException('table_name_has_already_been_taken');
     }
 
     table.name = TableUpdateDto.name;
