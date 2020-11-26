@@ -36,14 +36,14 @@ export class TableService {
     return plainToClass(TableResponseDto, table);
   }
 
-  async update(id: number, TableUpdateDto: TableUpdateDto) {
+  async update(id: number, tableUpdateDto: TableUpdateDto) {
     const table = await this._tableRepository.findOne(id);
 
     if (!table) throw new ConflictException('table_was_not_found');
 
     //Query to get a table with the name to update to compare if the name is already taken
     const storedTable = await this._tableRepository.findOne({
-      name: TableUpdateDto.name,
+      name: tableUpdateDto.name,
       id: Not(id),
     });
 
@@ -51,8 +51,8 @@ export class TableService {
       throw new ConflictException('table_name_has_already_been_taken');
     }
 
-    table.name = TableUpdateDto.name;
-    table.isActive = TableUpdateDto.isActive;
+    table.name = tableUpdateDto.name;
+    table.isActive = tableUpdateDto.isActive;
 
     return plainToClass(TableResponseDto, await table.save());
   }

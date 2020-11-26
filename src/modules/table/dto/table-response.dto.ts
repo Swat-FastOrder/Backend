@@ -9,6 +9,8 @@ export class TableResponseDto {
   @Expose()
   status: boolean;
   @Expose()
+  isAvailable: boolean;
+  @Expose()
   isActive: boolean;
   @Expose()
   createdAt: Date;
