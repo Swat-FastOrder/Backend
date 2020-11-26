@@ -8,8 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TableService } from './table.service';
-import { CreateTableDto } from './dto/create-table.dto';
-import { UpdateTableDto } from './dto/update-table.dto';
+import { TableCreateDto } from './dto/create-table.dto';
+import { TableUpdateDto } from './dto/update-table.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -28,8 +28,8 @@ export class TableController {
   @ApiOperation({ summary: 'Create table' })
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(@Body() createTableDto: CreateTableDto) {
-    return this._TableService.create(createTableDto);
+  create(@Body() TableCreateDto: TableCreateDto) {
+    return this._TableService.create(TableCreateDto);
   }
 
   @ApiOperation({ summary: 'Retrieves one table' })
@@ -42,7 +42,7 @@ export class TableController {
   @ApiOperation({ summary: 'Update table' })
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
-  update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
-    return this._TableService.update(+id, updateTableDto);
+  update(@Param('id') id: string, @Body() TableUpdateDto: TableUpdateDto) {
+    return this._TableService.update(+id, TableUpdateDto);
   }
 }

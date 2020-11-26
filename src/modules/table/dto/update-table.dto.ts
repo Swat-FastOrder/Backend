@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsDefined, IsString } from 'class-validator';
 
-export class UpdateTableDto {
+export class TableUpdateDto {
   @ApiProperty({ description: 'The table name', required: true })
   @IsString({ message: 'table_name_required' })
   name: string;

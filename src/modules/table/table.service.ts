@@ -1,9 +1,9 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Not } from 'typeorm';
-import { CreateTableDto } from './dto/create-table.dto';
-import { ResponseTableDto } from './dto/response-table.dto';
-import { UpdateTableDto } from './dto/update-table.dto';
+import { TableCreateDto } from './dto/create-table.dto';
+import { TableResponseDto } from './dto/response-table.dto';
+import { TableUpdateDto } from './dto/update-table.dto';
 import { Table } from './table.entity';
 import { TableRepository } from './table.repository';
 
@@ -11,7 +11,7 @@ import { TableRepository } from './table.repository';
 export class TableService {
   constructor(private readonly _tableRepository: TableRepository) {}
 
-  async create(createTable: CreateTableDto) {
+  async create(createTable: TableCreateDto) {
     const storedTable = await this._tableRepository.findOne({
       name: createTable.name,
     });
@@ -20,30 +20,30 @@ export class TableService {
 
     const table = plainToClass(Table, createTable);
 
-    return plainToClass(ResponseTableDto, await table.save());
+    return plainToClass(TableResponseDto, await table.save());
   }
 
-  async findAll(): Promise<ResponseTableDto[]> {
+  async findAll(): Promise<TableResponseDto[]> {
     const tables = await this._tableRepository.find();
-    return tables.map(el => plainToClass(ResponseTableDto, el));
+    return tables.map(el => plainToClass(TableResponseDto, el));
   }
 
-  async findOne(id: number): Promise<ResponseTableDto> {
+  async findOne(id: number): Promise<TableResponseDto> {
     const table = await this._tableRepository.findOne(id);
 
     if (!table) throw new ConflictException('table_was_not_found');
 
-    return plainToClass(ResponseTableDto, table);
+    return plainToClass(TableResponseDto, table);
   }
 
-  async update(id: number, updateTableDto: UpdateTableDto) {
+  async update(id: number, TableUpdateDto: TableUpdateDto) {
     const table = await this._tableRepository.findOne(id);
 
     if (!table) throw new ConflictException('table_was_not_found');
 
     //Query to get a table with the name to update to compare if the name is already taken
     const storedTable = await this._tableRepository.findOne({
-      name: updateTableDto.name,
+      name: TableUpdateDto.name,
       id: Not(id)
     });
 
@@ -51,9 +51,9 @@ export class TableService {
         throw new ConflictException('table_name_has_already_been_taken');
     }
 
-    table.name = updateTableDto.name;
-    table.isActive = updateTableDto.isActive;
+    table.name = TableUpdateDto.name;
+    table.isActive = TableUpdateDto.isActive;
 
-    return plainToClass(ResponseTableDto, await table.save());
+    return plainToClass(TableResponseDto, await table.save());
   }
 }
