@@ -13,12 +13,9 @@ export class Table extends BaseEntity {
   id: number;
   @Column({ type: 'varchar', name: 'name', length: 30 })
   name: string;
-  @Column({
-    type: 'boolean',
-    name: 'is_active',
-    default: true,
-    nullable: false,
-  })
+  @Column({ type: 'boolean', name: 'is_available', default: true })
+  isAvailable: boolean;
+  @Column({ type: 'boolean', name: 'is_active', default: true })
   isActive: boolean;
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

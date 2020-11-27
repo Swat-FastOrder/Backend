@@ -7,6 +7,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
 import { OrderModule } from './modules/order/order.module';
+import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
+import { MulterModule } from '@nestjs/platform-express';
 import { TableModule } from './modules/table/table.module';
 
 @Module({
@@ -18,11 +20,15 @@ import { TableModule } from './modules/table/table.module';
     MenuCategoryModule,
     OrderModule,
     TableModule,
+    MenuDishesModule,
+    MulterModule.register({
+      dest: './dishes-images',
+    }),
   ],
 })
 export class AppModule {
   static PORT: number | string;
   constructor(private readonly _configService: ConfigService) {
-    AppModule.PORT = _configService.get(ConfigEnum.APP_PORT);
+    AppModule.PORT = _configService.get(ConfigEnum.PORT);
   }
 }

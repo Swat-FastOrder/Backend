@@ -7,6 +7,10 @@ export class TableResponseDto {
   @Expose()
   name: string;
   @Expose()
+  status: boolean;
+  @Expose()
+  isAvailable: boolean;
+  @Expose()
   isActive: boolean;
   @Expose()
   createdAt: Date;
