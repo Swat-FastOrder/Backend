@@ -10,18 +10,14 @@ export class MenuDishesCreateDto {
   @IsString({ message: 'menu-dishes_description_required' })
   description: string;
 
-  @ApiProperty({ description: 'Menu dish category', required: true })
+  @ApiProperty({ description: 'Menu dish category', required: false })
   @IsNumber(
     { allowNaN: false, allowInfinity: false },
-    { message: 'menu-dishes_category_id_required' },
+    { message: 'menu-dishes_category_id' },
   )
   categoryId: number;
 
-  @ApiProperty({ description: 'Menu dish author', required: true })
-  @IsNumber(
-    { allowNaN: false, allowInfinity: false },
-    { message: 'menu-dishes_author_id_required' },
-  )
+  @ApiProperty({ description: 'Menu dish author', required: false })
   authorId: number;
 
   @ApiProperty({ description: 'Menu dish category', required: true })
