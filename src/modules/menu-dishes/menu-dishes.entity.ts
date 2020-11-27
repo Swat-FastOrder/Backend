@@ -18,13 +18,13 @@ export class MenuDish extends BaseEntity {
   @Column({ type: 'varchar', name: 'description', length: 255 })
   description: string;
 
-  @Column({ name: 'category_id', nullable: true })
+  @Column({ name: 'category_id', nullable: false })
   categoryId: number;
 
-  @Column({ type: 'boolean', name: 'is_recommended' })
+  @Column({ type: 'boolean', name: 'is_recommended', default: false })
   isRecommended: boolean;
 
-  @Column({ type: 'boolean', name: 'is_active' })
+  @Column({ type: 'boolean', name: 'is_active', default: true })
   isActive: boolean;
 
   @Column({ type: 'float', name: 'price' })
@@ -33,7 +33,7 @@ export class MenuDish extends BaseEntity {
   @Column({ type: 'varchar', name: 'image_url', length: 255 })
   imageUrl: string;
 
-  @Column({ name: 'author_id', nullable: true })
+  @Column({ name: 'author_id', nullable: false })
   authorId: number;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })

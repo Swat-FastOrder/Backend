@@ -9,6 +9,7 @@ import {
   Res,
   UploadedFile,
   Put,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
@@ -41,7 +42,8 @@ export class MenuDishesController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Create a new menu dish' })
-  create(@Body() newDish: MenuDishesCreateDto) {
+  create(@Body() newDish: MenuDishesCreateDto, @Req() req) {
+    newDish.authorId = req.user.id;
     return this._menuDishesService.create(newDish);
   }
 
