@@ -1,0 +1,26 @@
+language: node_js
+cache:
+  directories:
+    - node_modules
+    - '~/.npm'
+node_js:
+  - '13'
+git:
+  depth: 3
+script:
+  - npm run migration:run
+notifications:
+  email:
+    recipients:
+      - ala1289@gmail.com
+    on_success: always
+    on_failure: always
+deploy:
+  provider: heroku
+  skip_cleanup: true
+  keep_history: true
+  api_key:
+    secure: qnXASkArCGfsFGr0TV2ZvU7VbgmEzgs2LuiFfaLQocFCTxu2xN0B9tEQK9AIVM8GBLwM3OSA8LwU1beP3hvGdFJHFOR1NRd/5FSwnl7q/7/Y/xcU4tHm/bwNNl3tRrIoY4WB8ujQcJ+bevleMZSRYOyYO4e7DI6HKDeboZ/VazoP1Uw6hEgHrvBYrR7SQTl1Fl/MPxfvdCkyeaIdXGkpcHdRSF5+KM1CMEtOY8QN9QXg+aBU8pq/S/exMUFKfv9m7NKocHB74DNn1z6Igt11XwWZOmReI7fzcWYRPv4GUEZJRPYSPSPDBLw4ZLw+hPJpc9xPnZ6FN2w0/t3EVvbz4q5Dj3ec4Hd7MeXBbmmOSK58i06peLwC3gUtpIiWL5jtLSUSbiEBwicWBN7EQqlOQ2CfO9M1v+hf3dCwwDAAebG+vxJ/Fxz5YRBvbItWgTlde3Wv+7hTMDtvXMeaVXJJBkxL+4KZZKP2BLo4eWPfFdWGfm0opbAvHh4k9Ofe+IS4hGBrZ5mlhwYW9C6I1v/ANsEv7BfSsczVjfvfikXbfHj/kWJ4GGAkng1TL+4RHBh18lZTribOvG6K471GWlD7QKW8Q48a29nKHK89ATjE9PN2Zpbp74Oc/Lve0mwzUc7i3RS9tDsp17c7ibR7qN1VvZBHZg9FGg2I0EUoA4WaFGg=
+  app: orderfastapi
+  on:
+    repo: Swat-FastOrder/Backend
