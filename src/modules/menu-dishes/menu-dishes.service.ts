@@ -44,7 +44,6 @@ export class MenuDishesService {
     dish.isActive = menuDishUpdateDto.isActive;
     dish.price = menuDishUpdateDto.price;
     dish.imageUrl = menuDishUpdateDto.imageUrl;
-    dish.authorId = menuDishUpdateDto.authorId;
 
     return plainToClass(MenuDishesResponseDto, await dish.save());
   }

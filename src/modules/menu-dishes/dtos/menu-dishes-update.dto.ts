@@ -13,9 +13,6 @@ export class MenuDishUpdateDto {
   @ApiProperty({ description: 'Menu dish category', required: false })
   categoryId: number;
 
-  @ApiProperty({ description: 'Menu dish author', required: false })
-  authorId: number;
-
   @ApiProperty({ description: 'Menu dish category', required: false })
   price: number;
 
