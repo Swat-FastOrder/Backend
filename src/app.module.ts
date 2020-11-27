@@ -6,6 +6,7 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
+import { TableModule } from './modules/table/table.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MenuCategoryModule } from './modules/menu-category/menu-category.module
     UserModule,
     AuthModule,
     MenuCategoryModule,
+    TableModule,
   ],
 })
 export class AppModule {
