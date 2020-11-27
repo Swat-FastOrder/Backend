@@ -1,6 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { TableRepository } from '../table/table.repository';
 import { OrderCreateDto } from './dtos/order-create.dto';
+import { OrderFilterDto } from './dtos/order-filter.dto';
+import { OrderResponseDto } from './dtos/order-response.dto';
 import { Order } from './order.entity';
 import { OrderRepository } from './order.repository';
 
@@ -11,7 +18,7 @@ export class OrderService {
     private readonly _tableRepository: TableRepository,
   ) {}
 
-  findAll() {
+  findAll(filter: OrderFilterDto) {
     return this._orderRepository.find();
   }
   async findById(id: number) {
@@ -21,10 +28,16 @@ export class OrderService {
   }
   async create(newOrder: OrderCreateDto) {
     // TODO: Evaluar que la mesa este libre
+    const theTable = await this._tableRepository.findOne({
+      id: newOrder.tableId,
+    });
+    if (!theTable) {
+      throw new ConflictException('order_table_not_ready_or_not_found');
+    }
 
     const theOrder = plainToClass(Order, newOrder);
 
-    return theOrder.save();
+    return plainToClass(OrderResponseDto, await theOrder.save());
   }
   // TODO Requerimos un update?
 

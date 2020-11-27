@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
 import { OrderModule } from './modules/order/order.module';
+import { TableModule } from './modules/table/table.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { OrderModule } from './modules/order/order.module';
     AuthModule,
     MenuCategoryModule,
     OrderModule,
+    TableModule,
   ],
 })
 export class AppModule {

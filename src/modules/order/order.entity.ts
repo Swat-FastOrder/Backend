@@ -18,6 +18,8 @@ export class Order extends BaseEntity {
   tableId: number;
   @Column({ name: 'total_diners', type: 'int', default: 1 })
   totalDiners: number;
+  @Column({ name: 'total_dishes', type: 'int', default: 0 })
+  totalDishes: number;
   @Column({ name: 'total_price', type: 'float', default: 0 })
   totalPrice: number;
   @Column({

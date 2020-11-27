@@ -21,7 +21,8 @@ export class OrderController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   findAll() {
-    return this._orderService.findAll();
+    // TODO We must evaluate the role
+    return this._orderService.findAll({});
   }
 
   @ApiOperation({ summary: 'Retrieves one menu category' })
