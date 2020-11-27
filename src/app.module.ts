@@ -8,7 +8,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, UserModule, AuthModule, MenuCategoryModule],
+  imports: [
+    ConfigModule,
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    MenuCategoryModule,
+  ],
 })
 export class AppModule {
   static PORT: number | string;
