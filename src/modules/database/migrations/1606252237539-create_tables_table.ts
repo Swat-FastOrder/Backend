@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
+/* eslint-disable @typescript-eslint/class-name-casing */
 export class createTablesTable1606252237539 implements MigrationInterface {
   name = 'createTablesTable1606252237539';
 

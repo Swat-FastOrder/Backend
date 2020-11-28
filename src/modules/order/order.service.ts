@@ -18,6 +18,7 @@ export class OrderService {
     private readonly _tableRepository: TableRepository,
   ) {}
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   findAll(filter: OrderFilterDto) {
     return this._orderRepository.find();
   }
