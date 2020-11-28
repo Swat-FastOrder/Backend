@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiConflictResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OrderCreateDto } from './dtos/order-create.dto';
 import { OrderService } from './order.service';
 
@@ -34,6 +34,10 @@ export class OrderController {
   }
 
   @ApiOperation({ summary: 'Create menu category' })
+  @ApiConflictResponse({
+    description:
+      'It happens when the table isnt available (order_table_not_ready_or_not_found)',
+  })
   @Post()
   @UseGuards(AuthGuard('jwt'))
   create(@Body() newOrder: OrderCreateDto, @Req() req) {
