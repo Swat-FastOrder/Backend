@@ -10,8 +10,9 @@ export class OrderCreateDto {
   waitressId: number;
   @ApiProperty({
     description: 'The table of the order',
-    required: false,
+    required: true,
   })
+  @IsNumber({}, { message: 'order_table_required' })
   tableId: number;
   @ApiProperty({ description: 'The total diners', required: false })
   totalDiners: number;

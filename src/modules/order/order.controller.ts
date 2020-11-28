@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -35,7 +36,8 @@ export class OrderController {
   @ApiOperation({ summary: 'Create menu category' })
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(@Body() newOrder: OrderCreateDto) {
+  create(@Body() newOrder: OrderCreateDto, @Req() req) {
+    newOrder.authorId = req.user.id;
     return this._orderService.create(newOrder);
   }
 
