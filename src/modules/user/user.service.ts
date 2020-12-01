@@ -64,6 +64,8 @@ export class UserService {
 
   async uploadAvatar(userId: number, avatarUrl: string) {
     const user = await this._userRepository.findOne({ id: userId });
+    if (!user) throw new NotFoundException('user_not_found');
+    if (user.id != userId) throw new ConflictException('user_not_match');
     user.avatar = avatarUrl;
     return plainToClass(UserResponseDto, await user.save());
   }
