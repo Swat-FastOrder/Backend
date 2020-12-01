@@ -21,6 +21,8 @@ export class User extends BaseEntity {
   password: string;
   @Column({ name: 'is_active', default: false })
   isActive: boolean;
+  @Column({ type: 'varchar', name: 'avatar', length: 255 })
+  avatar: string;
   // Columns for audit
   @Column({ name: 'author_id', nullable: true })
   authorId: number;

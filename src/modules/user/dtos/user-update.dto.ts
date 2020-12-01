@@ -9,5 +9,8 @@ export class UserUpdateDto {
   @IsString({ message: 'user_lastname_required' })
   lastname: string;
 
+  @ApiProperty({ description: 'The user avatar url', required: false })
+  avatar: string;
+
   authorId: number;
 }
