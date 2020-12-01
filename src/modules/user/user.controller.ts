@@ -65,9 +65,8 @@ export class UserController {
   update(
     @Param('id') userId: number,
     @Body() newUser: UserUpdateDto,
-    @Req() req,
   ) {
-    newUser.authorId = req.user.id;
+    console.log
     return this._userService.update(userId, newUser);
   }
 

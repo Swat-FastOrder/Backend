@@ -19,15 +19,16 @@ export class OrderService {
   ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  findAll(filter: OrderFilterDto) {
-    return this._orderRepository.find();
+  async findAll(filter: OrderFilterDto): Promise<OrderResponseDto[]> {
+    const orders = await this._orderRepository.find();
+    return orders.map(o => plainToClass(OrderResponseDto, o));
   }
-  async findById(id: number) {
+  async findById(id: number): Promise<OrderResponseDto> {
     const theOrder = await this._orderRepository.findOne(id);
     if (!theOrder) throw new NotFoundException('order_not_found');
     return theOrder;
   }
-  async create(newOrder: OrderCreateDto) {
+  async create(newOrder: OrderCreateDto): Promise<OrderResponseDto> {
     // TODO: Evaluar que la mesa este libre
     const theTable = await this._tableRepository.findOne({
       id: newOrder.tableId,

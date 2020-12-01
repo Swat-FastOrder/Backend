@@ -12,7 +12,7 @@ import { OrderStatus } from './order.status.enum';
 export class Order extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
-  @Column({ name: 'waitress_id', type: 'int', nullable: true })
+  @Column({ name: 'waitress_id', type: 'int' })
   waitressId: number;
   @Column({ name: 'table_id', type: 'int' })
   tableId: number;
