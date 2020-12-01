@@ -1,4 +1,6 @@
 export enum OrderStatus {
-  PROGRESS = 'progress',
-  FINISHED = 'finished',
+  ORDERING = 'ordering',
+  WAITING = 'waiting',
+  PREPARING = 'preparing',
+  READY = 'ready',
 }

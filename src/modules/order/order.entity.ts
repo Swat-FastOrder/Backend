@@ -25,15 +25,13 @@ export class Order extends BaseEntity {
   @Column({
     type: 'enum',
     nullable: false,
-    default: OrderStatus.PROGRESS,
+    default: OrderStatus.ORDERING,
     enum: OrderStatus,
     enumName: 'enum_order_statuses',
   })
   status: OrderStatus;
 
   // Columns for audit
-  @Column({ name: 'author_id', nullable: false })
-  authorId: number;
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })

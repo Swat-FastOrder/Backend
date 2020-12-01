@@ -49,7 +49,7 @@ export class OrderController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   create(@Body() newOrder: OrderCreateDto, @Req() req) {
-    newOrder.authorId = req.user.id;
+    newOrder.waitressId = req.user.id;
     return this._orderService.create(newOrder);
   }
 

@@ -2,11 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
 export class OrderCreateDto {
-  @ApiProperty({
-    description: 'The waitress that attend the order',
-    required: true,
-  })
-  @IsNumber({}, { message: 'order_waitress_required' })
   waitressId: number;
   @ApiProperty({
     description: 'The table of the order',

@@ -62,11 +62,7 @@ export class UserController {
   @ApiNotFoundResponse({
     description: 'It happens when user not found (user_not_found)',
   })
-  update(
-    @Param('id') userId: number,
-    @Body() newUser: UserUpdateDto,
-  ) {
-    console.log
+  update(@Param('id') userId: number, @Body() newUser: UserUpdateDto) {
     return this._userService.update(userId, newUser);
   }
 
