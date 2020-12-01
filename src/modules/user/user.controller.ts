@@ -8,7 +8,12 @@ import {
   Put,
   Req,
   UseGuards,
+  Res,
+  UseInterceptors,
+  UploadedFile,
+  ConflictException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiConflictResponse,
@@ -21,6 +26,8 @@ import { UserCreateDto } from './dtos/user-create.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserService } from './user.service';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @ApiTags('The users')
 @Controller('users')
@@ -79,5 +86,32 @@ export class UserController {
   })
   disable(@Param('id') userId: number) {
     return this._userService.disable(userId);
+  }
+
+  @Get('avatar/:fileId')
+  @UseGuards(AuthGuard('jwt'))
+  async serveDishImage(@Param('fileId') fileId, @Res() res): Promise<any> {
+    res.sendFile(fileId, { root: 'avatars' });
+  }
+
+  @Post('avatar/:userId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ type: UserResponseDto })
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: diskStorage({
+        destination: './avatars',
+        filename: (req, file, cb) => {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          return cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  uploadImage(@Param('userId') userId, @UploadedFile() file) {
+    return this._userService.uploadAvatar(Number(userId), `/${file.path}`);
   }
 }
