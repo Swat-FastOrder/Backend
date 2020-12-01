@@ -6,6 +6,9 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
+import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { TableModule } from './modules/table/table.module';
 
 @Module({
   imports: [
@@ -14,6 +17,11 @@ import { MenuCategoryModule } from './modules/menu-category/menu-category.module
     UserModule,
     AuthModule,
     MenuCategoryModule,
+    TableModule,
+    MenuDishesModule,
+    MulterModule.register({
+      dest: './dishes-images',
+    }),
   ],
 })
 export class AppModule {

@@ -7,14 +7,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('menu_categories')
-export class MenuCategory extends BaseEntity {
+@Entity('tables')
+export class Table extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
-  @Column({ type: 'varchar', name: 'name', length: 50 })
+  @Column({ type: 'varchar', name: 'name', length: 30 })
   name: string;
-  @Column({ name: 'author_id', nullable: false })
-  authorId: number;
+  @Column({ type: 'boolean', name: 'is_available', default: true })
+  isAvailable: boolean;
+  @Column({ type: 'boolean', name: 'is_active', default: true })
+  isActive: boolean;
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
