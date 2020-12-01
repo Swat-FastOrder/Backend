@@ -90,7 +90,7 @@ export class UserController {
 
   @Get('avatar/:fileId')
   @UseGuards(AuthGuard('jwt'))
-  async serveDishImage(@Param('fileId') fileId, @Res() res): Promise<any> {
+  async serveAvatar(@Param('fileId') fileId, @Res() res): Promise<any> {
     res.sendFile(fileId, { root: 'avatars' });
   }
 
