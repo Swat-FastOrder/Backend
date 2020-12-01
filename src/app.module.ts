@@ -6,6 +6,7 @@ import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuCategoryModule } from './modules/menu-category/menu-category.module';
+import { OrderModule } from './modules/order/order.module';
 import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { TableModule } from './modules/table/table.module';
@@ -17,6 +18,7 @@ import { TableModule } from './modules/table/table.module';
     UserModule,
     AuthModule,
     MenuCategoryModule,
+    OrderModule,
     TableModule,
     MenuDishesModule,
     MulterModule.register({

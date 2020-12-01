@@ -6,10 +6,11 @@ import {
   Put,
   Param,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { MenuCategoryService } from './menu-category.service';
-import { MenuCategoryCreateDto } from './dto/menu-category.create.dto';
-import { MenuCategoryUpdateDto } from './dto/menu-category.update.dto';
+import { MenuCategoryCreateDto } from './dto/menu-category-create.dto';
+import { MenuCategoryUpdateDto } from './dto/menu-category-update.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -28,7 +29,8 @@ export class MenuCategoryController {
   @ApiOperation({ summary: 'Create menu category' })
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(@Body() createMenuCategoryDto: MenuCategoryCreateDto) {
+  create(@Body() createMenuCategoryDto: MenuCategoryCreateDto, @Req() req) {
+    createMenuCategoryDto.authorId = req.user.id;
     return this._menuCategoryService.create(createMenuCategoryDto);
   }
 

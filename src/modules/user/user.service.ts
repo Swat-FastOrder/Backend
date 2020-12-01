@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { User } from './user.entity';
@@ -6,6 +10,7 @@ import { UserRepository } from './user.repository';
 import { generate } from 'generate-password';
 import { genSalt, hash } from 'bcryptjs';
 import { UserResponseDto } from './dtos/user-response.dto';
+import { UserUpdateDto } from './dtos/user-update.dto';
 
 @Injectable()
 export class UserService {
@@ -40,5 +45,20 @@ export class UserService {
     const salt = await genSalt(10);
     theUser.password = await hash(password, salt);
     return plainToClass(UserResponseDto, await theUser.save());
+  }
+
+  async disable(userId: number) {
+    const user = await this._userRepository.findOne({ id: userId });
+    if (!user) throw new NotFoundException('user_not_found');
+    user.isActive = false;
+    return plainToClass(UserResponseDto, await user.save());
+  }
+  async update(userId: number, newUser: UserUpdateDto) {
+    const user = await this._userRepository.findOne({ id: userId });
+    if (!user) throw new NotFoundException('user_not_found');
+    if (user.id != userId) throw new ConflictException('user_not_match');
+    user.firstname = newUser.firstname;
+    user.lastname = newUser.lastname;
+    return plainToClass(UserResponseDto, await user.save());
   }
 }

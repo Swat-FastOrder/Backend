@@ -1,8 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { MenuCategoryCreateDto } from './dto/menu-category.create.dto';
-import { MenuCategoryResponseDto } from './dto/menu-category.response.dto';
-import { MenuCategoryUpdateDto } from './dto/menu-category.update.dto';
+import { MenuCategoryCreateDto } from './dto/menu-category-create.dto';
+import { MenuCategoryResponseDto } from './dto/menu-category-response.dto';
+import { MenuCategoryUpdateDto } from './dto/menu-category-update.dto';
 import { MenuCategory } from './menu-category.entity';
 import { MenuCategoryRepository } from './menu-category.respository';
 
@@ -33,7 +33,6 @@ export class MenuCategoryService {
       throw new ConflictException('menu_category_name_already_exists');
 
     const theMenuCategory = plainToClass(MenuCategory, newMenuCategory);
-    theMenuCategory.authorId = 1;
     return plainToClass(MenuCategoryResponseDto, await theMenuCategory.save());
   }
 

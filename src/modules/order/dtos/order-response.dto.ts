@@ -1,23 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
+import { OrderStatus } from '../order.status.enum';
 
 @Exclude()
-export class UserResponseDto {
+export class OrderResponseDto {
   @Expose()
   @ApiProperty()
   id: number;
   @Expose()
   @ApiProperty()
-  firstname: string;
+  waitressId: number;
   @Expose()
   @ApiProperty()
-  lastname: string;
+  tableId: number;
   @Expose()
   @ApiProperty()
-  email: string;
+  totalDiners: number;
   @Expose()
   @ApiProperty()
-  isActive: boolean;
+  totalDishes: number;
+  @Expose()
+  @ApiProperty()
+  totalPrice: number;
+  @Expose()
+  @ApiProperty()
+  status: OrderStatus;
   @Expose()
   @ApiProperty()
   createdAt: Date;
