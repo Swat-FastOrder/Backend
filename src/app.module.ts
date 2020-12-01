@@ -22,6 +22,9 @@ import { TableModule } from './modules/table/table.module';
     MulterModule.register({
       dest: './dishes-images',
     }),
+    MulterModule.register({
+      dest: './avatars',
+    }),
   ],
 })
 export class AppModule {
