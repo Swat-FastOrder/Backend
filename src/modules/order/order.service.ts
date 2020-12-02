@@ -39,7 +39,10 @@ export class OrderService {
 
     const theOrder = plainToClass(Order, newOrder);
 
-    return plainToClass(OrderResponseDto, await theOrder.save());
+    const orderCreated = await theOrder.save();
+    theTable.isAvailable = false;
+    theTable.save();
+    return plainToClass(OrderResponseDto, orderCreated);
   }
   // TODO Requerimos un update?
 
