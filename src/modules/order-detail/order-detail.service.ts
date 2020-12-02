@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderRepository } from '../order/order.repository';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
-import { OrderDetailResponseDto } from './dto/order-details-response.dto';
+import { OrderDetailResponseDto } from './dto/order-detail-response.dto';
 import { OrderDetail } from './order-detail.entity';
 import { OrderDetailRepository } from './order-details.repository';
 
@@ -16,14 +16,17 @@ export class OrderDetailService {
   ) {}
 
   // TODO add documentation api
-  async findAllByOrderId(orderId: number): Promise<OrderDetailResponseDto[]> {
-    const order = await this._orderRepository.findOne(orderId);
-    if (!order) throw new ConflictException('order_not_found');
+  async findAll({ orderId }): Promise<OrderDetailResponseDto[]> {
 
-    const details = await this._orderDetailRepository.find({
-      orderId: orderId,
-    });
+    let query = {};
 
+    if (orderId) {
+      query = { orderId };
+      const order = await this._orderRepository.findOne(orderId);
+      if (!order) throw new ConflictException('order_not_found');
+    }
+
+    const details = await this._orderDetailRepository.find(query);
     return details.map(detail => plainToClass(OrderDetailResponseDto, detail));
   }
 
@@ -40,8 +43,18 @@ export class OrderDetailService {
     if (!menuDish) throw new ConflictException('menu_dish_not_found');
 
     const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
-    orderDetail.save();
-    // TODO define and add response
+    orderDetail.price = menuDish.price;
+    await orderDetail.save();
+
+    const response = {
+      orderDetailId: orderDetail.id,
+      menuDishId: menuDish.id,
+      name: menuDish.name,
+      price: orderDetail.price,
+      imageUrl: menuDish.imageUrl,
+    }
+
+    return response;
   }
 
   // TODO add documentation api
@@ -49,6 +62,6 @@ export class OrderDetailService {
     const detail = await this._orderDetailRepository.findOne(id);
     if (!detail) throw new ConflictException('order_detail_not_found');
     detail.remove();
-    // TODO define and add response
+    return true;
   }
 }

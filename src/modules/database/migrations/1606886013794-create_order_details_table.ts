@@ -14,14 +14,7 @@ export class createOrderDetailsTable1606886013794
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE "users"`);
-    await queryRunner.query(`DROP TABLE "tables"`);
-    await queryRunner.query(`DROP TABLE "roles"`);
-    await queryRunner.query(`DROP TABLE "orders"`);
-    await queryRunner.query(`DROP TYPE "enum_order_statuses"`);
     await queryRunner.query(`DROP TABLE "order_details"`);
     await queryRunner.query(`DROP TYPE "enum_order_detail_statuses"`);
-    await queryRunner.query(`DROP TABLE "menu-dishes"`);
-    await queryRunner.query(`DROP TABLE "menu_categories"`);
   }
 }

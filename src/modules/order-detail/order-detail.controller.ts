@@ -6,12 +6,14 @@ import {
   Delete,
   UseGuards,
   Get,
+  Query,
 } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { OrderDetailResponseDto } from './dto/order-details-response.dto';
+import { OrderDetailResponseDto } from './dto/order-detail-response.dto';
+import { OrderDetailAddedResponseDto } from './dto/order-detail-added-response.dto';
 
 @ApiTags('Order Details')
 @Controller('order-details')
@@ -20,16 +22,19 @@ export class OrderDetailController {
 
   @ApiOperation({
     summary:
-      'Retrieves the details for a single order (only for testing detail creation)',
+      'Retrieves the orders details',
   })
   @ApiOkResponse({ type: OrderDetailResponseDto, isArray: true })
-  @Get('order/:orderId')
+  @ApiQuery({name:'orderId', required: false, type: Number })
+  @Get()
   @UseGuards(AuthGuard('jwt'))
-  findAllByOrderId(@Param('orderId') orderId: number) {
-    return this._orderDetailService.findAllByOrderId(orderId);
+  findAll(@Query() queryParams) {
+    const  { orderId } = queryParams;
+    return this._orderDetailService.findAll({ orderId });
   }
 
   @ApiOperation({ summary: 'Add one menu dish to an given order' })
+  @ApiOkResponse({ type: OrderDetailAddedResponseDto })
   @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@Body() orderDetailCreateDto: OrderDetailCreateDto) {
