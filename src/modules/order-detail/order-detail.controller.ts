@@ -1,34 +1,45 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Get,
+} from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
-import { CreateOrderDetailDto } from './dto/order-detail-create.dto';
-import { UpdateOrderDetailDto } from './dto/order-detail-update.dto';
+import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { OrderDetailResponseDto } from './dto/order-details-response.dto';
 
-@Controller('order-detail')
+@ApiTags('Order Details')
+@Controller('order-details')
 export class OrderDetailController {
-  constructor(private readonly orderDetailService: OrderDetailService) {}
+  constructor(private readonly _orderDetailService: OrderDetailService) {}
 
+  @ApiOperation({
+    summary:
+      'Retrieves the details for a single order (only for testing detail creation)',
+  })
+  @ApiOkResponse({ type: OrderDetailResponseDto, isArray: true })
+  @Get('order/:orderId')
+  @UseGuards(AuthGuard('jwt'))
+  findAllByOrderId(@Param('orderId') orderId: number) {
+    return this._orderDetailService.findAllByOrderId(orderId);
+  }
+
+  @ApiOperation({ summary: 'Add one menu dish to an given order' })
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() createOrderDetailDto: CreateOrderDetailDto) {
-    return this.orderDetailService.create(createOrderDetailDto);
+  create(@Body() orderDetailCreateDto: OrderDetailCreateDto) {
+    return this._orderDetailService.create(orderDetailCreateDto);
   }
 
-  @Get()
-  findAll() {
-    return this.orderDetailService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderDetailService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateOrderDetailDto: UpdateOrderDetailDto) {
-    return this.orderDetailService.update(+id, updateOrderDetailDto);
-  }
-
+  @ApiOperation({ summary: 'Remove a order detail from order' })
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderDetailService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this._orderDetailService.remove(+id);
   }
 }

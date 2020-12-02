@@ -1,5 +1,11 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { OrderDetailStatus } from "./order-detail.status.enum";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { OrderDetailStatus } from './order-detail.status.enum';
 
 @Entity('order_details')
 export class OrderDetail extends BaseEntity {
@@ -12,7 +18,7 @@ export class OrderDetail extends BaseEntity {
   @Column({ name: 'menu_dish_id', type: 'int' })
   menuDishId: number;
 
-  @Column({ name: 'chef_id', type: 'int' })
+  @Column({ name: 'chef_id', type: 'int', nullable: true })
   chefId: number;
 
   @Column({ name: 'price', type: 'float' })

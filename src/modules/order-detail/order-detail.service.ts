@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrderDetailDto } from './dto/order-detail-create.dto';
-import { UpdateOrderDetailDto } from './dto/order-detail-update.dto';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
+import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
+import { OrderRepository } from '../order/order.repository';
+import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
+import { OrderDetailResponseDto } from './dto/order-details-response.dto';
+import { OrderDetail } from './order-detail.entity';
+import { OrderDetailRepository } from './order-details.repository';
 
 @Injectable()
 export class OrderDetailService {
-  create(createOrderDetailDto: CreateOrderDetailDto) {
-    return 'This action adds a new orderDetail';
+  constructor(
+    private readonly _orderRepository: OrderRepository,
+    private readonly _menuDishRepository: MenuDishesRepository,
+    private readonly _orderDetailRepository: OrderDetailRepository,
+  ) {}
+
+  // TODO add documentation api
+  async findAllByOrderId(orderId: number): Promise<OrderDetailResponseDto[]> {
+    const order = await this._orderRepository.findOne(orderId);
+    if (!order) throw new ConflictException('order_not_found');
+
+    const details = await this._orderDetailRepository.find({
+      orderId: orderId,
+    });
+
+    return details.map(detail => plainToClass(OrderDetailResponseDto, detail));
   }
 
-  findAll() {
-    return `This action returns all orderDetail`;
+  // TODO add documentation api
+  async create(orderDetailCreateDto: OrderDetailCreateDto) {
+    const order = await this._orderRepository.findOne(
+      orderDetailCreateDto.orderId,
+    );
+    if (!order) throw new ConflictException('order_not_found');
+
+    const menuDish = await this._menuDishRepository.findOne(
+      orderDetailCreateDto.menuDishId,
+    );
+    if (!menuDish) throw new ConflictException('menu_dish_not_found');
+
+    const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
+    orderDetail.save();
+    // TODO define and add response
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} orderDetail`;
-  }
-
-  update(id: number, updateOrderDetailDto: UpdateOrderDetailDto) {
-    return `This action updates a #${id} orderDetail`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} orderDetail`;
+  // TODO add documentation api
+  async remove(id: number) {
+    const detail = await this._orderDetailRepository.findOne(id);
+    if (!detail) throw new ConflictException('order_detail_not_found');
+    detail.remove();
+    // TODO define and add response
   }
 }
