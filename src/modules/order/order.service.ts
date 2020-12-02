@@ -29,9 +29,9 @@ export class OrderService {
     return theOrder;
   }
   async create(newOrder: OrderCreateDto): Promise<OrderResponseDto> {
-    // TODO: Evaluar que la mesa este libre
     const theTable = await this._tableRepository.findOne({
       id: newOrder.tableId,
+      isAvailable: true,
     });
     if (!theTable) {
       throw new ConflictException('order_table_not_ready_or_not_found');
