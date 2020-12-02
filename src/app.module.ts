@@ -11,6 +11,8 @@ import { MenuDishesModule } from './modules/menu-dishes/menu-dishes.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { TableModule } from './modules/table/table.module';
 import { OrderDetailModule } from './modules/order-detail/order-detail.module';
+import { RoleModule } from './modules/role/role.module';
+
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { OrderDetailModule } from './modules/order-detail/order-detail.module';
     OrderModule,
     TableModule,
     MenuDishesModule,
+    RoleModule,
     MulterModule.register({
       dest: './dishes-images',
     }),
