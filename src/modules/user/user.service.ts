@@ -61,4 +61,11 @@ export class UserService {
     user.lastname = newUser.lastname;
     return plainToClass(UserResponseDto, await user.save());
   }
+
+  async uploadAvatar(userId: number, avatarUrl: string) {
+    const user = await this._userRepository.findOne({ id: userId });
+    if (!user) throw new NotFoundException('user_not_found');
+    user.avatar = avatarUrl;
+    return plainToClass(UserResponseDto, await user.save());
+  }
 }
