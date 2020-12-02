@@ -5,9 +5,6 @@ export class updateUserTable1606847894690 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "tables" ADD "is_available" boolean NOT NULL DEFAULT true`,
-    );
-    await queryRunner.query(
       `ALTER TABLE "users" ADD "avatar" character varying(255) NULL`,
     );
   }
