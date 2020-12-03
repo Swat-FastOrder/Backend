@@ -56,7 +56,6 @@ export class UserService {
   async update(userId: number, newUser: UserUpdateDto) {
     const user = await this._userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('user_not_found');
-    if (user.id != userId) throw new ConflictException('user_not_match');
     user.firstname = newUser.firstname;
     user.lastname = newUser.lastname;
     return plainToClass(UserResponseDto, await user.save());
