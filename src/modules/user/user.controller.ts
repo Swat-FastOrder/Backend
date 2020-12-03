@@ -32,7 +32,6 @@ import { extname } from 'path';
 @ApiTags('The users')
 @Controller('users')
 export class UserController {
-
   constructor(private readonly _userService: UserService) {}
 
   @Get()

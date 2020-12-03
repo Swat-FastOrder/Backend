@@ -16,7 +16,7 @@ import { SendGridModule } from '@anchan828/nest-sendgrid';
 @Module({
   imports: [
     SendGridModule.forRoot({
-      apikey: new ConfigService().get(ConfigEnum.MAIL_KEY)
+      apikey: new ConfigService().get(ConfigEnum.MAIL_KEY),
     }),
     ConfigModule,
     DatabaseModule,

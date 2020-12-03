@@ -17,10 +17,9 @@ import { ConfigEnum } from '../config/config.enum';
 import { emailTemplate } from '../utils/email-welcome-template';
 @Injectable()
 export class UserService {
-
   constructor(
     private readonly _userRepository: UserRepository,
-    private readonly _sendGrid: SendGridService
+    private readonly _sendGrid: SendGridService,
   ) {}
 
   async findAll(): Promise<UserResponseDto[]> {
@@ -48,15 +47,19 @@ export class UserService {
     const salt = await genSalt(10);
     theUser.password = await hash(password, salt);
 
-    await theUser.save()
+    await theUser.save();
 
-    const fullName = `${theUser.firstname} ${theUser.lastname}`;
+    let emailInfo = {
+      name: `${theUser.firstname} ${theUser.lastname}`,
+      password,
+      email: theUser.email,
+    };
 
     await this._sendGrid.send({
       to: theUser.email,
       from: new ConfigService().get(ConfigEnum.BUSINESS_MAIL),
-      subject: "Welcome to Fast Order",
-      html: emailTemplate(fullName, theUser.email, password),
+      subject: 'Welcome to Fast Order',
+      html: emailTemplate(emailInfo),
     });
 
     return plainToClass(UserResponseDto, theUser);

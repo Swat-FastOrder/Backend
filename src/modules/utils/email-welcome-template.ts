@@ -1,4 +1,4 @@
-export const emailTemplate = (name, email, password) => {
+export const emailTemplate = ({ name, email, password }) => {
   return `
   <!DOCTYPE html>
   <html lang="es">
@@ -22,7 +22,7 @@ export const emailTemplate = (name, email, password) => {
               width="180px"
               height="180px"
               src="https://i.imgur.com/a6xLPxj.png"
-              alt="Logo of HALAH Laboratories"
+              alt="Logo Fast Order"
             />
           </td>
         </tr>
