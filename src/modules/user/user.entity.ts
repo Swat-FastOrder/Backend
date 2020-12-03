@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '../role/role.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -30,12 +33,13 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', name: 'avatar', length: 255 })
   avatar: string;
 
+  @ManyToOne(() => Role, { nullable: false, eager: true })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
   // Columns for audit
   @Column({ name: 'author_id', nullable: true })
   authorId: number;
-
-  @Column({ name: 'role_id', nullable: true })
-  roleId: number;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

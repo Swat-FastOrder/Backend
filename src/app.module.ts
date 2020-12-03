@@ -13,7 +13,6 @@ import { TableModule } from './modules/table/table.module';
 import { OrderDetailModule } from './modules/order-detail/order-detail.module';
 import { RoleModule } from './modules/role/role.module';
 
-
 @Module({
   imports: [
     ConfigModule,

@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
+/* eslint-disable @typescript-eslint/class-name-casing */
 export class updateUserTable1606847894690 implements MigrationInterface {
   name = 'updateUserTable1606847894690';
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class OrderDetailCreateDto {
   @ApiProperty({ description: 'The order', required: true })

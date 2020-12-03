@@ -7,13 +7,4 @@ export class RoleResponseDto {
 
   @Expose()
   name: string;
-
-  @Expose()
-  authorId: number;
-
-  @Expose()
-  createdAt: Date;
-
-  @Expose()
-  updatedAt: Date;
 }

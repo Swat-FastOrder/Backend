@@ -31,6 +31,7 @@ export class AuthService {
       lastname: user.lastname,
       email: user.email,
       id: user.id,
+      role: user.role.name,
     };
     const token = await this._jwtService.sign(payload);
     return plainToClass(SigninResponseDto, {

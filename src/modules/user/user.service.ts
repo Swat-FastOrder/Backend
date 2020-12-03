@@ -11,10 +11,14 @@ import { generate } from 'generate-password';
 import { genSalt, hash } from 'bcryptjs';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
+import { RoleRepository } from '../role/role.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly _userRepository: UserRepository) {}
+  constructor(
+    private readonly _userRepository: UserRepository,
+    private readonly _roleRepository: RoleRepository,
+  ) {}
 
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this._userRepository.find();
@@ -33,6 +37,8 @@ export class UserService {
     if (user) throw new ConflictException('email_already_exists');
     const theUser: User = plainToClass(User, newUser);
     theUser.isActive = true;
+    const role = await this._roleRepository.findOne(newUser.roleId);
+    if (!role) throw new NotFoundException('role_not_found');
     const password = generate({
       length: 10,
       numbers: true,
@@ -44,6 +50,7 @@ export class UserService {
     );
     const salt = await genSalt(10);
     theUser.password = await hash(password, salt);
+    theUser.role = role;
     return plainToClass(UserResponseDto, await theUser.save());
   }
 
