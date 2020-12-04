@@ -3,12 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuDishesRepository } from './menu-dishes.repository';
 import { MenuDishesService } from './menu-dishes.service';
 import { MenuDishesController } from './menu-dishes.controller';
-import { MenuCategoryModule } from '../menu-category/menu-category.module';
+import { MenuCategoryRepository } from '../menu-category/menu-category.respository';
 
 @Module({
   imports: [
-    MenuCategoryModule,
-    TypeOrmModule.forFeature([MenuDishesRepository]),
+    TypeOrmModule.forFeature([MenuDishesRepository, MenuCategoryRepository]),
   ],
   providers: [MenuDishesService],
   controllers: [MenuDishesController],

@@ -9,13 +9,13 @@ import { MenuDish } from './menu-dishes.entity';
 import { MenuDishesRepository } from './menu-dishes.repository';
 import { MenuDishesResponseDto } from './dtos/menu-dishes-response.dto';
 import { MenuDishUpdateDto } from './dtos/menu-dishes-update.dto';
-import { MenuCategoryService } from '../menu-category/menu-category.service';
+import { MenuCategoryRepository } from '../menu-category/menu-category.respository';
 
 @Injectable()
 export class MenuDishesService {
   constructor(
     private readonly _menuDishesRepository: MenuDishesRepository,
-    private readonly _menuCategoriesService: MenuCategoryService,
+    private readonly _menuCategoriesRepository: MenuCategoryRepository,
   ) {}
 
   async findAll(): Promise<MenuDishesResponseDto[]> {
@@ -36,7 +36,9 @@ export class MenuDishesService {
     });
     if (repeatedDish) throw new ConflictException('dish_already_exists');
 
-    const category = await this._menuCategoriesService.findOne(dish.categoryId);
+    const category = await this._menuCategoriesRepository.findOne(
+      dish.categoryId,
+    );
 
     if (!category) throw new NotFoundException('category_id_not_found');
 
