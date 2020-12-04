@@ -9,10 +9,14 @@ import { MenuDish } from './menu-dishes.entity';
 import { MenuDishesRepository } from './menu-dishes.repository';
 import { MenuDishesResponseDto } from './dtos/menu-dishes-response.dto';
 import { MenuDishUpdateDto } from './dtos/menu-dishes-update.dto';
+import { MenuCategoryService } from '../menu-category/menu-category.service';
 
 @Injectable()
 export class MenuDishesService {
-  constructor(private readonly _menuDishesRepository: MenuDishesRepository) {}
+  constructor(
+    private readonly _menuDishesRepository: MenuDishesRepository,
+    private readonly _menuCategoriesService: MenuCategoryService,
+  ) {}
 
   async findAll(): Promise<MenuDishesResponseDto[]> {
     const menuDishes = await this._menuDishesRepository.find();
@@ -32,8 +36,9 @@ export class MenuDishesService {
     });
     if (repeatedDish) throw new ConflictException('dish_already_exists');
 
-    if (!dish.categoryId)
-      throw new NotFoundException('cannot_create_dish_without_category_id');
+    const category = await this._menuCategoriesService.findOne(dish.categoryId);
+
+    if (!category) throw new NotFoundException('category_id_not_found');
 
     const newDish: MenuDish = plainToClass(MenuDish, dish);
     return plainToClass(MenuDishesResponseDto, await newDish.save());

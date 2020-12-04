@@ -8,5 +8,6 @@ import { MenuCategoryRepository } from './menu-category.respository';
   imports: [TypeOrmModule.forFeature([MenuCategoryRepository])],
   controllers: [MenuCategoryController],
   providers: [MenuCategoryService],
+  exports: [MenuCategoryService],
 })
 export class MenuCategoryModule {}
