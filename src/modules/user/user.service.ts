@@ -11,10 +11,16 @@ import { generate } from 'generate-password';
 import { genSalt, hash } from 'bcryptjs';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
-
+import { SendGridService } from '@anchan828/nest-sendgrid';
+import { ConfigService } from '../config/config.service';
+import { ConfigEnum } from '../config/config.enum';
+import { emailTemplate } from '../utils/email-welcome-template';
 @Injectable()
 export class UserService {
-  constructor(private readonly _userRepository: UserRepository) {}
+  constructor(
+    private readonly _userRepository: UserRepository,
+    private readonly _sendGrid: SendGridService,
+  ) {}
 
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this._userRepository.find();
@@ -37,14 +43,26 @@ export class UserService {
       length: 10,
       numbers: true,
     });
-    console.log(
-      '-------- The generated password is -------- ',
-      theUser.email,
-      password,
-    );
+
     const salt = await genSalt(10);
     theUser.password = await hash(password, salt);
-    return plainToClass(UserResponseDto, await theUser.save());
+
+    await theUser.save();
+
+    const emailInfo = {
+      name: `${theUser.firstname} ${theUser.lastname}`,
+      password,
+      email: theUser.email,
+    };
+
+    await this._sendGrid.send({
+      to: theUser.email,
+      from: new ConfigService().get(ConfigEnum.BUSINESS_MAIL),
+      subject: 'Welcome to Fast Order',
+      html: emailTemplate(emailInfo),
+    });
+
+    return plainToClass(UserResponseDto, theUser);
   }
 
   async disable(userId: number) {

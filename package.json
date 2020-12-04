@@ -24,6 +24,7 @@
     "migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.json"
   },
   "dependencies": {
+    "@anchan828/nest-sendgrid": "^0.3.33",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/jwt": "^7.2.0",

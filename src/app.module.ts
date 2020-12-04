@@ -12,10 +12,14 @@ import { MulterModule } from '@nestjs/platform-express';
 import { TableModule } from './modules/table/table.module';
 import { OrderDetailModule } from './modules/order-detail/order-detail.module';
 import { RoleModule } from './modules/role/role.module';
+import { SendGridModule } from '@anchan828/nest-sendgrid';
 
 
 @Module({
   imports: [
+    SendGridModule.forRoot({
+      apikey: new ConfigService().get(ConfigEnum.MAIL_KEY),
+    }),
     ConfigModule,
     DatabaseModule,
     UserModule,
