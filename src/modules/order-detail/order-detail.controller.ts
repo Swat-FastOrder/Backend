@@ -10,7 +10,12 @@ import {
 } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { OrderDetailResponseDto } from './dto/order-detail-response.dto';
 import { OrderDetailAddedResponseDto } from './dto/order-detail-added-response.dto';
@@ -21,15 +26,14 @@ export class OrderDetailController {
   constructor(private readonly _orderDetailService: OrderDetailService) {}
 
   @ApiOperation({
-    summary:
-      'Retrieves the orders details',
+    summary: 'Retrieves the orders details',
   })
   @ApiOkResponse({ type: OrderDetailResponseDto, isArray: true })
-  @ApiQuery({name:'orderId', required: false, type: Number })
+  @ApiQuery({ name: 'orderId', required: false, type: Number })
   @Get()
   @UseGuards(AuthGuard('jwt'))
   findAll(@Query() queryParams) {
-    const  { orderId } = queryParams;
+    const { orderId } = queryParams;
     return this._orderDetailService.findAll({ orderId });
   }
 

@@ -11,7 +11,6 @@ import {
   Res,
   UseInterceptors,
   UploadedFile,
-  ConflictException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
@@ -38,7 +37,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Retrieves the users' })
   @ApiOkResponse({ type: UserResponseDto, isArray: true })
-  getAll() {
+  getAll(): Promise<UserResponseDto[]> {
     return this._userService.findAll();
   }
 
@@ -46,7 +45,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Retrieve one user' })
   @ApiOkResponse({ type: UserResponseDto })
-  getById(@Param('userId') userId: number) {
+  getById(@Param('userId') userId: number): Promise<UserResponseDto> {
     return this._userService.findById(userId);
   }
 
@@ -54,7 +53,14 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Add user' })
   @ApiOkResponse({ type: UserResponseDto })
-  create(@Body() newUser: UserCreateDto, @Req() req) {
+  @ApiConflictResponse({
+    description:
+      'It happens when the email already exist (email_already_exists)',
+  })
+  @ApiNotFoundResponse({
+    description: 'It happens when the role not found (role_not_found)',
+  })
+  create(@Body() newUser: UserCreateDto, @Req() req): Promise<UserResponseDto> {
     newUser.authorId = req.user.id;
     return this._userService.create(newUser);
   }

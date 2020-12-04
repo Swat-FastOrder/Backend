@@ -3,5 +3,6 @@ export interface IJwtPayload {
   firstname: string;
   lastname: string;
   email: string;
+  role: string;
   iat?: Date;
 }

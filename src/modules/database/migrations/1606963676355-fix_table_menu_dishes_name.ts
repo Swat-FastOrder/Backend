@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
+/* eslint-disable @typescript-eslint/class-name-casing */
 export class fixTableMenuDishesName1606963676355 implements MigrationInterface {
   name = 'fixTableMenuDishesName1606963676355';
 

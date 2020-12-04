@@ -3,31 +3,47 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '../role/role.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
   @Column({ type: 'varchar', name: 'first_name', length: 50 })
   firstname: string;
+
   @Column({ type: 'varchar', name: 'last_name', length: 50 })
   lastname: string;
+
   @Column({ type: 'varchar', unique: true, length: 65 })
   email: string;
+
   @Column({ type: 'varchar' })
   password: string;
+
   @Column({ name: 'is_active', default: false })
   isActive: boolean;
+
   @Column({ type: 'varchar', name: 'avatar', length: 255 })
   avatar: string;
+
+  @ManyToOne(() => Role, { nullable: false, eager: true })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
   // Columns for audit
   @Column({ name: 'author_id', nullable: true })
   authorId: number;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
+
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 }

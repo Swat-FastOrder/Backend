@@ -14,7 +14,6 @@ import { OrderDetailModule } from './modules/order-detail/order-detail.module';
 import { RoleModule } from './modules/role/role.module';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
 
-
 @Module({
   imports: [
     SendGridModule.forRoot({

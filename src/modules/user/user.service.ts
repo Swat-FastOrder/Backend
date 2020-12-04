@@ -15,10 +15,13 @@ import { SendGridService } from '@anchan828/nest-sendgrid';
 import { ConfigService } from '../config/config.service';
 import { ConfigEnum } from '../config/config.enum';
 import { emailTemplate } from '../utils/email-welcome-template';
+import { RoleRepository } from '../role/role.repository';
+
 @Injectable()
 export class UserService {
   constructor(
     private readonly _userRepository: UserRepository,
+    private readonly _roleRepository: RoleRepository,
     private readonly _sendGrid: SendGridService,
   ) {}
 
@@ -39,6 +42,8 @@ export class UserService {
     if (user) throw new ConflictException('email_already_exists');
     const theUser: User = plainToClass(User, newUser);
     theUser.isActive = true;
+    const role = await this._roleRepository.findOne(newUser.roleId);
+    if (!role) throw new NotFoundException('role_not_found');
     const password = generate({
       length: 10,
       numbers: true,
@@ -46,7 +51,7 @@ export class UserService {
 
     const salt = await genSalt(10);
     theUser.password = await hash(password, salt);
-
+    theUser.role = role;
     await theUser.save();
 
     const emailInfo = {

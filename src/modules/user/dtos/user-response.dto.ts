@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { RoleResponseDto } from 'src/modules/role/dto/role-response.dto';
 
 @Exclude()
 export class UserResponseDto {
@@ -26,6 +27,10 @@ export class UserResponseDto {
   @Expose()
   @ApiProperty()
   isActive: boolean;
+
+  @Expose()
+  @Type(() => RoleResponseDto)
+  readonly role: RoleResponseDto;
 
   @Expose()
   @ApiProperty()

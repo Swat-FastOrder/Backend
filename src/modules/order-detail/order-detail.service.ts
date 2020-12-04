@@ -17,7 +17,6 @@ export class OrderDetailService {
 
   // TODO add documentation api
   async findAll({ orderId }): Promise<OrderDetailResponseDto[]> {
-
     let query = {};
 
     if (orderId) {
@@ -52,7 +51,7 @@ export class OrderDetailService {
       name: menuDish.name,
       price: orderDetail.price,
       imageUrl: menuDish.imageUrl,
-    }
+    };
 
     return response;
   }
