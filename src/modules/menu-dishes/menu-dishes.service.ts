@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MenuDishesCreateDto } from './dtos/menu-dishes-create.dto';
 import { MenuDish } from './menu-dishes.entity';
@@ -27,6 +31,9 @@ export class MenuDishesService {
       name: dish.name,
     });
     if (repeatedDish) throw new ConflictException('dish_already_exists');
+
+    if (!dish.categoryId)
+      throw new NotFoundException('cannot_create_dish_without_category_id');
 
     const newDish: MenuDish = plainToClass(MenuDish, dish);
     return plainToClass(MenuDishesResponseDto, await newDish.save());
