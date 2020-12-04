@@ -49,7 +49,7 @@ export class UserService {
 
     await theUser.save();
 
-    let emailInfo = {
+    const emailInfo = {
       name: `${theUser.firstname} ${theUser.lastname}`,
       password,
       email: theUser.email,
