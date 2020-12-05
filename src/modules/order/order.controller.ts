@@ -11,8 +11,10 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiConflictResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { OrderCreateDto } from './dtos/order-create.dto';
@@ -60,8 +62,11 @@ export class OrderController {
     return this._orderService.delete(id);
   }
 
-  //TODO add API doc
   @ApiOperation({ summary: 'Send order to kitchen' })
+  @ApiParam({name:'id', description:'Order Id'})
+  @ApiOkResponse({ type: OrderResponseDto })
+  @ApiConflictResponse({description:'order is not in ordering status | order is empty'})
+  @ApiNotFoundResponse({ description: 'it happens when order is not found'})
   @Post('send-to-kitchen/:id')
   @UseGuards(AuthGuard('jwt'))
   sendToKitchen(@Param('id') id: number) {
