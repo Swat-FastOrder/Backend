@@ -59,4 +59,12 @@ export class OrderController {
   delete(@Param('id') id: number) {
     return this._orderService.delete(id);
   }
+
+  //TODO add API doc
+  @ApiOperation({ summary: 'Send order to kitchen' })
+  @Post('send-to-kitchen/:id')
+  @UseGuards(AuthGuard('jwt'))
+  sendToKitchen(@Param('id') id: number) {
+    return this._orderService.sendToKitchen(id);
+  }
 }

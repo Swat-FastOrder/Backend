@@ -4,18 +4,22 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
+import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
 import { OrderCreateDto } from './dtos/order-create.dto';
 import { OrderFilterDto } from './dtos/order-filter.dto';
 import { OrderResponseDto } from './dtos/order-response.dto';
 import { Order } from './order.entity';
 import { OrderRepository } from './order.repository';
+import { OrderStatus } from './order.status.enum';
 
 @Injectable()
 export class OrderService {
   constructor(
     private readonly _orderRepository: OrderRepository,
     private readonly _tableRepository: TableRepository,
+    private readonly _orderDetails: OrderDetailRepository,
   ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -52,5 +56,20 @@ export class OrderService {
     // Logico y mantener un control de la cantidad de ordenes se cancelan
     // Cancelación de ordenes con motivo?
     throw new Error('Method not implemented.');
+  }
+
+  async sendToKitchen(id: number) {
+
+    let order = await this._orderRepository.findOne(id);
+
+    if(!order) throw new NotFoundException('order_was_not_found');
+
+    if(order.status != OrderStatus.ORDERING ) throw new ConflictException('the_order_was_already_shipped_previously');
+
+    if(order.totalDishes < 1) throw new ConflictException('it_cant_ship_because_order_is_empty');
+
+    order.status = OrderStatus.WAITING;
+    order.save();
+    return plainToClass(OrderResponseDto, order);
   }
 }
