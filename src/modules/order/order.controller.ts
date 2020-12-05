@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -67,7 +68,7 @@ export class OrderController {
   @ApiOkResponse({ type: OrderResponseDto })
   @ApiConflictResponse({description:'order is not in ordering status | order is empty'})
   @ApiNotFoundResponse({ description: 'it happens when order is not found'})
-  @Post('send-to-kitchen/:id')
+  @Put('send-to-kitchen/:id')
   @UseGuards(AuthGuard('jwt'))
   sendToKitchen(@Param('id') id: number) {
     return this._orderService.sendToKitchen(id);
