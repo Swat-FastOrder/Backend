@@ -1,14 +1,22 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MenuDishesCreateDto } from './dtos/menu-dishes-create.dto';
 import { MenuDish } from './menu-dishes.entity';
 import { MenuDishesRepository } from './menu-dishes.repository';
 import { MenuDishesResponseDto } from './dtos/menu-dishes-response.dto';
 import { MenuDishUpdateDto } from './dtos/menu-dishes-update.dto';
+import { MenuCategoryRepository } from '../menu-category/menu-category.respository';
 
 @Injectable()
 export class MenuDishesService {
-  constructor(private readonly _menuDishesRepository: MenuDishesRepository) {}
+  constructor(
+    private readonly _menuDishesRepository: MenuDishesRepository,
+    private readonly _menuCategoriesRepository: MenuCategoryRepository,
+  ) {}
 
   async findAll(): Promise<MenuDishesResponseDto[]> {
     const menuDishes = await this._menuDishesRepository.find();
@@ -27,6 +35,12 @@ export class MenuDishesService {
       name: dish.name,
     });
     if (repeatedDish) throw new ConflictException('dish_already_exists');
+
+    const category = await this._menuCategoriesRepository.findOne(
+      dish.categoryId,
+    );
+
+    if (!category) throw new NotFoundException('category_id_not_found');
 
     const newDish: MenuDish = plainToClass(MenuDish, dish);
     return plainToClass(MenuDishesResponseDto, await newDish.save());
