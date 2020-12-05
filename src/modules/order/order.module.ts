@@ -7,7 +7,13 @@ import { OrderRepository } from './order.repository';
 import { OrderService } from './order.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OrderRepository, TableRepository, OrderDetailRepository])],
+  imports: [
+    TypeOrmModule.forFeature([
+      OrderRepository,
+      TableRepository,
+      OrderDetailRepository,
+    ]),
+  ],
   controllers: [OrderController],
   providers: [OrderService],
 })

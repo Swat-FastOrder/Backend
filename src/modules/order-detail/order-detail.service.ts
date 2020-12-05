@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderRepository } from '../order/order.repository';
@@ -45,6 +49,9 @@ export class OrderDetailService {
     orderDetail.price = menuDish.price;
     await orderDetail.save();
 
+    order.totalDishes++;
+    order.save();
+
     const response = {
       orderDetailId: orderDetail.id,
       menuDishId: menuDish.id,
@@ -59,8 +66,16 @@ export class OrderDetailService {
   // TODO add documentation api
   async remove(id: number) {
     const detail = await this._orderDetailRepository.findOne(id);
-    if (!detail) throw new ConflictException('order_detail_not_found');
+
+    if (!detail) throw new NotFoundException('order_detail_not_found');
+
+    const order = await this._orderRepository.findOne(detail.orderId);
+
+    order.totalDishes--;
+    order.save();
+
     detail.remove();
+
     return true;
   }
 }

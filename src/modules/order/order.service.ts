@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
 import { OrderCreateDto } from './dtos/order-create.dto';
@@ -59,14 +58,15 @@ export class OrderService {
   }
 
   async sendToKitchen(id: number) {
+    const order = await this._orderRepository.findOne(id);
 
-    let order = await this._orderRepository.findOne(id);
+    if (!order) throw new NotFoundException('order_was_not_found');
 
-    if(!order) throw new NotFoundException('order_was_not_found');
+    if (order.status != OrderStatus.ORDERING)
+      throw new ConflictException('the_order_was_already_shipped_previously');
 
-    if(order.status != OrderStatus.ORDERING ) throw new ConflictException('the_order_was_already_shipped_previously');
-
-    if(order.totalDishes < 1) throw new ConflictException('it_cant_ship_because_order_is_empty');
+    if (order.totalDishes < 1)
+      throw new ConflictException('it_cant_ship_because_order_is_empty');
 
     order.status = OrderStatus.WAITING;
     order.save();
