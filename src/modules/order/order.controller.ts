@@ -64,10 +64,12 @@ export class OrderController {
   }
 
   @ApiOperation({ summary: 'Send order to kitchen' })
-  @ApiParam({name:'id', description:'Order Id'})
+  @ApiParam({ name: 'id', description: 'Order Id' })
   @ApiOkResponse({ type: OrderResponseDto })
-  @ApiConflictResponse({description:'order is not in ordering status | order is empty'})
-  @ApiNotFoundResponse({ description: 'it happens when order is not found'})
+  @ApiConflictResponse({
+    description: 'order is not in ordering status | order is empty',
+  })
+  @ApiNotFoundResponse({ description: 'it happens when order is not found' })
   @Put('send-to-kitchen/:id')
   @UseGuards(AuthGuard('jwt'))
   sendToKitchen(@Param('id') id: number) {
