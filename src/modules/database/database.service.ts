@@ -14,7 +14,7 @@ export const databaseProviders = [
         username: config.get(ConfigEnum.POSTGRES_USER),
         password: config.get(ConfigEnum.POSTGRES_PASSWORD),
         database: config.get(ConfigEnum.POSTGRES_DB),
-        logging: true,
+        logging: false,
         // ssl: false,
         // extra: { ssl: { rejectUnauthorized: false } },
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
