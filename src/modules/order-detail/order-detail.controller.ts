@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   Query,
+  Put,
 } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
@@ -19,6 +20,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { OrderDetailResponseDto } from './dto/order-detail-response.dto';
 import { OrderDetailAddedResponseDto } from './dto/order-detail-added-response.dto';
+import { OrderDetailUpdateDto } from './dto/order-detail-update.dto';
 
 @ApiTags('Order Details')
 @Controller('order-details')
@@ -50,5 +52,13 @@ export class OrderDetailController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this._orderDetailService.remove(+id);
+  }
+
+  @ApiOperation({ summary: 'Update order detail' })
+  @ApiOkResponse({ type: OrderDetailResponseDto })
+  @UseGuards(AuthGuard('jwt'))
+  @Put()
+  update(@Body() orderDetailUpdateDto: OrderDetailUpdateDto) {
+    return this._orderDetailService.update(orderDetailUpdateDto);
   }
 }
