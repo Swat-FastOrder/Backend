@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { TableService } from './table.service';
 import { TableCreateDto } from './dto/table-create.dto';
@@ -21,8 +22,8 @@ export class TableController {
   @ApiOperation({ summary: 'Retrieves all tables' })
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  findAll() {
-    return this._tableService.findAll();
+  findAll(@Req() req) {
+    return this._tableService.findAll({ userId: req.user.id });
   }
 
   @ApiOperation({ summary: 'Create table' })
