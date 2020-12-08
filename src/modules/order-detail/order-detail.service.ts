@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderRepository } from '../order/order.repository';
@@ -29,21 +33,22 @@ export class OrderDetailService {
     return details.map(detail => plainToClass(OrderDetailResponseDto, detail));
   }
 
-  // TODO add documentation api
   async create(orderDetailCreateDto: OrderDetailCreateDto) {
     const order = await this._orderRepository.findOne(
       orderDetailCreateDto.orderId,
     );
-    if (!order) throw new ConflictException('order_not_found');
+    if (!order) throw new NotFoundException('order_not_found');
 
     const menuDish = await this._menuDishRepository.findOne(
       orderDetailCreateDto.menuDishId,
     );
-    if (!menuDish) throw new ConflictException('menu_dish_not_found');
+    if (!menuDish) throw new NotFoundException('menu_dish_not_found');
 
     const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
     orderDetail.price = menuDish.price;
     await orderDetail.save();
+
+    this.updateOrderTotals(order.id);
 
     const response = {
       orderDetailId: orderDetail.id,
@@ -56,11 +61,28 @@ export class OrderDetailService {
     return response;
   }
 
-  // TODO add documentation api
   async remove(id: number) {
     const detail = await this._orderDetailRepository.findOne(id);
-    if (!detail) throw new ConflictException('order_detail_not_found');
-    detail.remove();
+
+    if (!detail) throw new NotFoundException('order_detail_not_found');
+
+    await detail.remove();
+
+    this.updateOrderTotals(detail.orderId);
+
     return true;
+  }
+
+  /**
+   * This function update total dishes and total price for a given order id
+   * @param orderId
+   */
+  async updateOrderTotals(orderId: number) {
+    const order = await this._orderRepository.findOne(orderId);
+    const details = await this._orderDetailRepository.find({ orderId });
+    const total = details.reduce((total, { price }) => total + price, 0);
+    order.totalDishes = details.length;
+    order.totalPrice = total;
+    await order.save();
   }
 }
