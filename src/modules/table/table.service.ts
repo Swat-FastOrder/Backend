@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Equal, In, Not } from 'typeorm';
 import { OrderRepository } from '../order/order.repository';
@@ -46,7 +50,7 @@ export class TableService {
         waitressId: filter.userId,
         status: Not(Equal(OrderStatus.FINISHED)),
       });
-      const wheres: any = [{ isAvailable: true }];
+      const wheres: any = [{ isAvailable: true, isActive: true }];
       if (orders.length > 0) {
         wheres.push({
           id: In(orders.map(o => o.tableId)),
@@ -62,7 +66,7 @@ export class TableService {
   async findOne(id: number): Promise<TableResponseDto> {
     const table = await this._tableRepository.findOne(id);
 
-    if (!table) throw new ConflictException('table_was_not_found');
+    if (!table) throw new NotFoundException('table_was_not_found');
 
     return plainToClass(TableResponseDto, table);
   }
@@ -70,7 +74,7 @@ export class TableService {
   async update(id: number, tableUpdateDto: TableUpdateDto) {
     const table = await this._tableRepository.findOne(id);
 
-    if (!table) throw new ConflictException('table_was_not_found');
+    if (!table) throw new NotFoundException('table_was_not_found');
 
     //Query to get a table with the name to update to compare if the name is already taken
     const storedTable = await this._tableRepository.findOne({
