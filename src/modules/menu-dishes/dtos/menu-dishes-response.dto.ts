@@ -25,13 +25,4 @@ export class MenuDishesResponseDto {
 
   @Expose()
   imageUrl: string;
-
-  @Expose()
-  authorId: number;
-
-  @Expose()
-  createdAt: Date;
-
-  @Expose()
-  updatedAt: Date;
 }
