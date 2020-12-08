@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { stat } from 'fs';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderResponseDto } from '../order/dtos/order-response.dto';
 import { OrderRepository } from '../order/order.repository';
@@ -56,6 +55,7 @@ export class OrderDetailService {
 
     const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
     orderDetail.price = menuDish.price;
+    orderDetail.dish = menuDish;
     await orderDetail.save();
 
     this.updateOrderTotals(order.id);
@@ -82,16 +82,16 @@ export class OrderDetailService {
   }
 
   async update(orderDetail: OrderDetailUpdateDto): Promise<OrderResponseDto> {
-    let detail = await this._orderDetailRepository.findOne(orderDetail.id);
+    const detail = await this._orderDetailRepository.findOne(orderDetail.id);
     if (!detail) throw new NotFoundException('order_detail_was_not_found');
 
-    const order = await this._orderRepository.findOne(detail.orderId);
     /*
+    const order = await this._orderRepository.findOne(detail.orderId);
     if (order.status != OrderStatus.PREPARING)
       throw new ConflictException(
         'order_is_not_preparing_cant_update_detail_status',
       );
-*/
+    */
     const statuses = Object.values(OrderDetailStatus);
 
     if (!statuses.includes(orderDetail.status))

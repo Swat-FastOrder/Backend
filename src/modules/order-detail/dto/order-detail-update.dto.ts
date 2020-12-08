@@ -7,7 +7,11 @@ export class OrderDetailUpdateDto {
   @IsNumber({}, { message: 'order_detail_required' })
   id: number;
 
-  @ApiProperty({ description: 'The order detail status', required: true, enum: OrderDetailStatus })
+  @ApiProperty({
+    description: 'The order detail status',
+    required: true,
+    enum: OrderDetailStatus,
+  })
   @IsString({ message: 'table_name_required' })
   status: OrderDetailStatus;
 }

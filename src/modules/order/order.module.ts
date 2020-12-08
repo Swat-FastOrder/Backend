@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrderDetailWorkflowRepository } from '../order-detail/order-details-workflow.repository';
 import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
 import { OrderController } from './order.controller';

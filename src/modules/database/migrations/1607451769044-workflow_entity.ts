@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
+/* eslint-disable @typescript-eslint/class-name-casing */
 export class workflowEntity1607451769044 implements MigrationInterface {
   name = 'workflowEntity1607451769044';
 
