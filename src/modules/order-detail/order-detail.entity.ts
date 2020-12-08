@@ -3,8 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { MenuDish } from '../menu-dishes/menu-dishes.entity';
 import { OrderDetailStatus } from './order-detail.status.enum';
 
 @Entity('order_details')
@@ -15,8 +18,9 @@ export class OrderDetail extends BaseEntity {
   @Column({ name: 'order_id', type: 'int' })
   orderId: number;
 
-  @Column({ name: 'menu_dish_id', type: 'int' })
-  menuDishId: number;
+  @ManyToOne(() => MenuDish, { nullable: false, eager: true })
+  @JoinColumn({ name: 'menu_dish_id' })
+  dish: MenuDish;
 
   @Column({ name: 'chef_id', type: 'int', nullable: true })
   chefId: number;

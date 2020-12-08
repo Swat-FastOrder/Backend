@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { MenuDish } from '../menu-dishes/menu-dishes.entity';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderRepository } from '../order/order.repository';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
@@ -46,6 +47,7 @@ export class OrderDetailService {
 
     const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
     orderDetail.price = menuDish.price;
+    orderDetail.dish = menuDish;
     await orderDetail.save();
 
     this.updateOrderTotals(order.id);
