@@ -6,6 +6,7 @@ import { OrderDetailRepository } from './order-details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { UserRepository } from '../user/user.repository';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
+import { OrderDetailWorkflowRepository } from './order-details-workflow.repository';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
       OrderRepository,
       UserRepository,
       MenuDishesRepository,
+      OrderDetailWorkflowRepository,
     ]),
   ],
   controllers: [OrderDetailController],

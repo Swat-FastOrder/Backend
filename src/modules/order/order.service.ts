@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { OrderDetailStatus } from '../order-detail/order-detail.status.enum';
+import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
 import { OrderCreateDto } from './dtos/order-create.dto';
 import { OrderFilterDto } from './dtos/order-filter.dto';
@@ -17,6 +19,7 @@ export class OrderService {
   constructor(
     private readonly _orderRepository: OrderRepository,
     private readonly _tableRepository: TableRepository,
+    private readonly _orderDetailRepository: OrderDetailRepository,
   ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -61,15 +64,26 @@ export class OrderService {
   }
 
   async sendToKitchen(id: number) {
+    console.log(`Sending the order ${id} to kitchen`);
     const order = await this._orderRepository.findOne(id);
 
     if (!order) throw new NotFoundException('order_was_not_found');
-
+    /*
     if (order.status != OrderStatus.ORDERING)
       throw new ConflictException('the_order_was_already_shipped_previously');
+    */
+    const details = await this._orderDetailRepository.find({
+      orderId: id,
+      status: OrderDetailStatus.ORDERED,
+    });
 
-    if (order.totalDishes < 1)
+    if (details.length < 1)
       throw new ConflictException('it_cant_ship_because_order_is_empty');
+    // Send dishes to kitchen
+    details.forEach(od => {
+      od.status = OrderDetailStatus.READY_TO_PREPARE;
+      od.save();
+    });
 
     order.status = OrderStatus.WAITING;
     order.save();
