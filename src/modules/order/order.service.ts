@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
 import { OrderCreateDto } from './dtos/order-create.dto';
 import { OrderFilterDto } from './dtos/order-filter.dto';
@@ -18,19 +17,21 @@ export class OrderService {
   constructor(
     private readonly _orderRepository: OrderRepository,
     private readonly _tableRepository: TableRepository,
-    private readonly _orderDetails: OrderDetailRepository,
   ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   async findAll(filter: OrderFilterDto): Promise<OrderResponseDto[]> {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     const orders = await this._orderRepository.find();
     return orders.map(o => plainToClass(OrderResponseDto, o));
   }
+
   async findById(id: number): Promise<OrderResponseDto> {
     const theOrder = await this._orderRepository.findOne(id);
     if (!theOrder) throw new NotFoundException('order_not_found');
     return theOrder;
   }
+
   async create(newOrder: OrderCreateDto): Promise<OrderResponseDto> {
     const theTable = await this._tableRepository.findOne({
       id: newOrder.tableId,
@@ -47,9 +48,11 @@ export class OrderService {
     theTable.save();
     return plainToClass(OrderResponseDto, orderCreated);
   }
-  // TODO Requerimos un update?
 
+  // TODO Requerimos un update?
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   delete(id: number) {
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     // TODO: Evaluar que la mesa este libre
     // Tendria que ser un disabled? O aplicar un update?
     // Logico y mantener un control de la cantidad de ordenes se cancelan
