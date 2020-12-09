@@ -31,7 +31,7 @@ export class OrderDetail extends BaseEntity {
   @Column({
     type: 'enum',
     nullable: false,
-    default: OrderDetailStatus.WAITING,
+    default: OrderDetailStatus.ORDERED,
     enum: OrderDetailStatus,
     enumName: 'enum_order_detail_statuses',
   })

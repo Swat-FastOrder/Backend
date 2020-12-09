@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   Query,
+  Put,
 } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
@@ -14,6 +15,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
@@ -34,8 +36,8 @@ export class OrderDetailController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   findAll(@Query() queryParams) {
-    const { orderId } = queryParams;
-    return this._orderDetailService.findAll({ orderId });
+    const { orderId, status } = queryParams;
+    return this._orderDetailService.findAll({ orderId, status });
   }
 
   @ApiOperation({ summary: 'Add one menu dish to an given order' })
@@ -58,5 +60,43 @@ export class OrderDetailController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this._orderDetailService.remove(+id);
+  }
+
+  @ApiOperation({ summary: 'The dish is preparing' })
+  @ApiParam({ name: 'id', description: 'Order detail Id' })
+  @ApiOkResponse({ type: OrderDetailResponseDto })
+  @ApiNotFoundResponse({
+    description:
+      'it happens when the dish is not found (order_detail_not_found) or cant prepare the dish (order_detail_workflow_not_found)',
+  })
+  @Put('preparing/:id')
+  @UseGuards(AuthGuard('jwt'))
+  preparing(@Param('id') id: number) {
+    return this._orderDetailService.preparing(id);
+  }
+  @ApiOperation({ summary: 'The dish is already to serve' })
+  @ApiParam({ name: 'id', description: 'Order detail Id' })
+  @ApiOkResponse({ type: OrderDetailResponseDto })
+  @ApiNotFoundResponse({
+    description:
+      'it happens when the dish is not found (order_detail_not_found) or cant check the dish like ready to serve (order_detail_workflow_not_found)',
+  })
+  @Put('ready-to-serve/:id')
+  @UseGuards(AuthGuard('jwt'))
+  readyToServe(@Param('id') id: number) {
+    return this._orderDetailService.readyToServe(id);
+  }
+
+  @ApiOperation({ summary: 'The dish was served' })
+  @ApiParam({ name: 'id', description: 'Order detail Id' })
+  @ApiOkResponse({ type: OrderDetailResponseDto })
+  @ApiNotFoundResponse({
+    description:
+      'it happens when the dish is not found (order_detail_not_found) or cant serve the dish (order_detail_workflow_not_found)',
+  })
+  @Put('served/:id')
+  @UseGuards(AuthGuard('jwt'))
+  serve(@Param('id') id: number) {
+    return this._orderDetailService.serve(id);
   }
 }
