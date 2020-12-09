@@ -31,7 +31,7 @@ export class OrderDetailService {
   ): Promise<OrderDetailResponseDto[]> {
     if (filter.orderId) {
       const order = await this._orderRepository.findOne(filter.orderId);
-      if (!order) throw new ConflictException('order_not_found');
+      if (!order) throw new NotFoundException('order_not_found');
     }
     const orderIdEq = queryBuildEqual('orderId', filter.orderId);
     const statusEq = queryBuildEqual('status', filter.status);
@@ -85,13 +85,6 @@ export class OrderDetailService {
     const detail = await this._orderDetailRepository.findOne(orderDetail.id);
     if (!detail) throw new NotFoundException('order_detail_was_not_found');
 
-    /*
-    const order = await this._orderRepository.findOne(detail.orderId);
-    if (order.status != OrderStatus.PREPARING)
-      throw new ConflictException(
-        'order_is_not_preparing_cant_update_detail_status',
-      );
-    */
     const statuses = Object.values(OrderDetailStatus);
 
     if (!statuses.includes(orderDetail.status))

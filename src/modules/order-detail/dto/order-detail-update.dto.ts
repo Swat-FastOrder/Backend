@@ -12,6 +12,6 @@ export class OrderDetailUpdateDto {
     required: true,
     enum: OrderDetailStatus,
   })
-  @IsString({ message: 'table_name_required' })
+  @IsString({ message: 'order_detail_status_required' })
   status: OrderDetailStatus;
 }

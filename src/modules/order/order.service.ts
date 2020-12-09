@@ -68,10 +68,7 @@ export class OrderService {
     const order = await this._orderRepository.findOne(id);
 
     if (!order) throw new NotFoundException('order_was_not_found');
-    /*
-    if (order.status != OrderStatus.ORDERING)
-      throw new ConflictException('the_order_was_already_shipped_previously');
-    */
+
     const details = await this._orderDetailRepository.find({
       orderId: id,
       status: OrderDetailStatus.ORDERED,
