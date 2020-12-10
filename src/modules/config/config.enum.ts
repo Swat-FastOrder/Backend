@@ -8,4 +8,5 @@ export enum ConfigEnum {
   JWT_SECRET = 'JWT_SECRET',
   MAIL_KEY = 'MAIL_KEY',
   BUSINESS_MAIL = 'BUSINESS_MAIL',
+  URL_LOGIN = 'URL_LOGIN'
 }

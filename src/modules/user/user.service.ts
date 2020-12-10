@@ -83,6 +83,7 @@ export class UserService {
       name: `${theUser.firstname} ${theUser.lastname}`,
       password,
       email: theUser.email,
+      url: new ConfigService().get(ConfigEnum.URL_LOGIN)
     };
 
     await this._sendGrid.send({
