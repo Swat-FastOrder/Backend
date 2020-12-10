@@ -15,6 +15,9 @@ export class Role extends BaseEntity {
   @Column({ type: 'varchar', length: 35 })
   name: string;
 
+  @Column({ type: 'boolean', name: 'is_administrator', default: false })
+  isAdministrator: boolean;
+
   // Columns for audit
   @Column({ name: 'author_id' })
   authorId: number;
