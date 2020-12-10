@@ -16,6 +16,9 @@ import { ConfigService } from '../config/config.service';
 import { ConfigEnum } from '../config/config.enum';
 import { emailTemplate } from '../utils/email-welcome-template';
 import { RoleRepository } from '../role/role.repository';
+import { UserFilterDto } from './dtos/user-filter.dto';
+import { queryBuildEqual } from '../utils/query.build.util';
+import { In, Not } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -25,8 +28,30 @@ export class UserService {
     private readonly _sendGrid: SendGridService,
   ) {}
 
-  async findAll(): Promise<UserResponseDto[]> {
-    const users = await this._userRepository.find();
+  async findAll(filter: UserFilterDto): Promise<UserResponseDto[]> {
+    const activeEq = queryBuildEqual(
+      'isActive',
+      filter.active ? filter.active : true,
+    );
+    const roles = await this._roleRepository.find({
+      isAdministrator: true,
+    });
+    /**
+     * I can't resolve in one query :'(
+     *
+     * The correct way is role: {
+     *    isAdministrator: false
+     * }
+     * but it isn't worked, the "where" sentence generated is incorrect
+     *
+     */
+
+    const users = await this._userRepository.find({
+      ...activeEq,
+      role: {
+        id: Not(In(roles.map(r => r.id))),
+      },
+    });
     return users.map(u => plainToClass(UserResponseDto, u));
   }
 
