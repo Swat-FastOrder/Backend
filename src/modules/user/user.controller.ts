@@ -19,6 +19,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { UserCreateDto } from './dtos/user-create.dto';
@@ -37,8 +38,9 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Retrieves the users' })
   @ApiOkResponse({ type: UserResponseDto, isArray: true })
-  getAll(): Promise<UserResponseDto[]> {
-    return this._userService.findAll();
+  @ApiQuery({ name: 'active', type: Boolean, required: false })
+  getAll(@Param('active') active: boolean): Promise<UserResponseDto[]> {
+    return this._userService.findAll({ active });
   }
 
   @Get(':userId')
