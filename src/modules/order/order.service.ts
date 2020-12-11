@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { Not } from 'typeorm';
 import { OrderDetailStatus } from '../order-detail/order-detail.status.enum';
 import { OrderDetailRepository } from '../order-detail/order-details.repository';
 import { TableRepository } from '../table/table.repository';
@@ -52,15 +53,51 @@ export class OrderService {
     return plainToClass(OrderResponseDto, orderCreated);
   }
 
-  // TODO Requerimos un update?
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  delete(id: number) {
-    /* eslint-enable @typescript-eslint/no-unused-vars */
-    // TODO: Evaluar que la mesa este libre
-    // Tendria que ser un disabled? O aplicar un update?
-    // Logico y mantener un control de la cantidad de ordenes se cancelan
-    // Cancelación de ordenes con motivo?
-    throw new Error('Method not implemented.');
+  async delete(id: number) {
+    console.log(`Deleting the order ${id}`);
+    const order = await this._orderRepository.findOne(id);
+
+    if (!order) throw new NotFoundException('order_was_not_found');
+
+    const details = await this._orderDetailRepository.find({
+      where: {
+        order: { id },
+      },
+    });
+    if (details.length > 0)
+      throw new ConflictException('it_cant_delete_because_order_is_not_empty');
+    try {
+      await order.remove();
+      return true;
+    } catch (e) {
+      console.error('Cant delete the order', e);
+    }
+    return false;
+  }
+
+  async finish(id: number) {
+    console.log(`Finishing the order ${id}`);
+    const order = await this._orderRepository.findOne(id);
+
+    if (!order) throw new NotFoundException('order_was_not_found');
+
+    const details = await this._orderDetailRepository.find({
+      where: {
+        order: { id },
+        status: Not(OrderDetailStatus.SERVED),
+      },
+    });
+    if (details.length > 0)
+      throw new ConflictException(
+        'it_cant_finish_because_dishes_pending_to_served',
+      );
+    try {
+      order.status = OrderStatus.FINISHED;
+      return plainToClass(OrderResponseDto, await order.save());
+    } catch (e) {
+      console.error('Cant finish the order', e);
+      throw e;
+    }
   }
 
   async sendToKitchen(id: number) {
