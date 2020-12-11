@@ -70,19 +70,22 @@ export class OrderService {
     if (!order) throw new NotFoundException('order_was_not_found');
 
     const details = await this._orderDetailRepository.find({
-      orderId: id,
-      status: OrderDetailStatus.ORDERED,
+      where: {
+        order: { id },
+        status: OrderDetailStatus.ORDERED,
+      },
     });
-
     if (details.length < 1)
       throw new ConflictException('it_cant_ship_because_order_is_empty');
     // Send dishes to kitchen
     details.forEach(od => {
       od.status = OrderDetailStatus.READY_TO_PREPARE;
+      od.cycleInKitchen++;
       od.save();
     });
 
     order.status = OrderStatus.WAITING;
+    order.timesInKitchen++;
     order.save();
     return plainToClass(OrderResponseDto, order);
   }

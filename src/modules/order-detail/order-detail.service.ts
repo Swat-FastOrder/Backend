@@ -4,9 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { In } from 'typeorm';
 import { MenuDishesRepository } from '../menu-dishes/menu-dishes.repository';
 import { OrderResponseDto } from '../order/dtos/order-response.dto';
 import { OrderRepository } from '../order/order.repository';
+import { RoleEnum } from '../role/role.enum';
+import { RoleRepository } from '../role/role.repository';
 import { queryBuildEqual } from '../utils/query.build.util';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
 import { OrderDetailFilterDto } from './dto/order-detail-filter.dto';
@@ -24,6 +27,7 @@ export class OrderDetailService {
     private readonly _menuDishRepository: MenuDishesRepository,
     private readonly _orderDetailRepository: OrderDetailRepository,
     private readonly _orderDetailWorkflowRepository: OrderDetailWorkflowRepository,
+    private readonly _roleRepository: RoleRepository,
   ) {}
 
   async findAll(
@@ -33,11 +37,28 @@ export class OrderDetailService {
       const order = await this._orderRepository.findOne(filter.orderId);
       if (!order) throw new NotFoundException('order_not_found');
     }
-    const orderIdEq = queryBuildEqual('orderId', filter.orderId);
-    const statusEq = queryBuildEqual('status', filter.status);
+    const role = await this._roleRepository.findOne({ name: filter.role });
+    let orderIdEq = {};
+    if (filter.orderId) {
+      orderIdEq = { order: { id: filter.orderId } };
+    }
+    let statusEq;
+    if (role.name == RoleEnum.CHEF) {
+      statusEq = {
+        status: In([
+          OrderDetailStatus.READY_TO_PREPARE,
+          OrderDetailStatus.PREPARING,
+        ]),
+      };
+    } else {
+      statusEq = queryBuildEqual('status', filter.status);
+    }
 
     const details = await this._orderDetailRepository.find({
       where: { ...orderIdEq, ...statusEq },
+      order: {
+        createdAt: 'ASC',
+      },
     });
     return details.map(detail => plainToClass(OrderDetailResponseDto, detail));
   }
@@ -54,8 +75,10 @@ export class OrderDetailService {
     if (!menuDish) throw new NotFoundException('menu_dish_not_found');
 
     const orderDetail = plainToClass(OrderDetail, orderDetailCreateDto);
+    orderDetail.order = order;
     orderDetail.price = menuDish.price;
     orderDetail.dish = menuDish;
+    orderDetail.cycleInKitchen = order.timesInKitchen;
     await orderDetail.save();
 
     this.updateOrderTotals(order.id);
@@ -76,7 +99,7 @@ export class OrderDetailService {
 
     await detail.remove();
 
-    this.updateOrderTotals(detail.orderId);
+    this.updateOrderTotals(detail.order.id);
 
     return true;
   }
@@ -101,7 +124,11 @@ export class OrderDetailService {
    */
   async updateOrderTotals(orderId: number) {
     const order = await this._orderRepository.findOne(orderId);
-    const details = await this._orderDetailRepository.find({ orderId });
+    const details = await this._orderDetailRepository.find({
+      where: {
+        order: { id: orderId },
+      },
+    });
     const total = details.reduce((total, { price }) => total + price, 0);
     order.totalDishes = details.length;
     order.totalPrice = total;
