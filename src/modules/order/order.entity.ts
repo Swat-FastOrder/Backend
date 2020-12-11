@@ -30,7 +30,8 @@ export class Order extends BaseEntity {
     enumName: 'enum_order_statuses',
   })
   status: OrderStatus;
-
+  @Column({ name: 'times_in_kitchen', type: 'int', default: 0 })
+  timesInKitchen: number;
   // Columns for audit
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

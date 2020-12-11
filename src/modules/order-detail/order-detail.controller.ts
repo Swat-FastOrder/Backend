@@ -8,6 +8,7 @@ import {
   Get,
   Query,
   Put,
+  Req,
 } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service';
 import { OrderDetailCreateDto } from './dto/order-detail-create.dto';
@@ -35,9 +36,13 @@ export class OrderDetailController {
   @ApiQuery({ name: 'orderId', required: false, type: Number })
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  findAll(@Query() queryParams) {
+  findAll(@Query() queryParams, @Req() req) {
     const { orderId, status } = queryParams;
-    return this._orderDetailService.findAll({ orderId, status });
+    return this._orderDetailService.findAll({
+      orderId,
+      status,
+      role: req.user.role,
+    });
   }
 
   @ApiOperation({ summary: 'Add one menu dish to an given order' })

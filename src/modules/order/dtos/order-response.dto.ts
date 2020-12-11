@@ -28,7 +28,4 @@ export class OrderResponseDto {
   @Expose()
   @ApiProperty()
   createdAt: Date;
-  @Expose()
-  @ApiProperty()
-  updatedAt: Date;
 }

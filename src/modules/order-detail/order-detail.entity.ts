@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MenuDish } from '../menu-dishes/menu-dishes.entity';
+import { Order } from '../order/order.entity';
 import { OrderDetailStatus } from './order-detail.status.enum';
 
 @Entity('order_details')
@@ -15,8 +16,9 @@ export class OrderDetail extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ name: 'order_id', type: 'int' })
-  orderId: number;
+  @ManyToOne(() => Order, { nullable: false, eager: true })
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 
   @ManyToOne(() => MenuDish, { nullable: false, eager: true })
   @JoinColumn({ name: 'menu_dish_id' })
@@ -36,6 +38,9 @@ export class OrderDetail extends BaseEntity {
     enumName: 'enum_order_detail_statuses',
   })
   status: OrderDetailStatus;
+
+  @Column({ name: 'cycle_in_kitchen', type: 'int' })
+  cycleInKitchen: number;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
