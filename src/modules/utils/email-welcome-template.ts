@@ -1,4 +1,4 @@
-export const emailTemplate = ({ name, email, password }) => {
+export const emailTemplate = ({ name, email, password , url}) => {
   return `
   <!DOCTYPE html>
   <html lang="es">
@@ -69,7 +69,7 @@ export const emailTemplate = ({ name, email, password }) => {
                 color: #f1f7fe;
                 text-decoration: none;
               "
-              href="https://www.google.com/"
+              href="${url}"
               >Go to Login</a
             >
           </td>

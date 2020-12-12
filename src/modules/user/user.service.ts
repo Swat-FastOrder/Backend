@@ -26,6 +26,7 @@ export class UserService {
     private readonly _userRepository: UserRepository,
     private readonly _roleRepository: RoleRepository,
     private readonly _sendGrid: SendGridService,
+    private readonly _configService: ConfigService
   ) {}
 
   async findAll(filter: UserFilterDto): Promise<UserResponseDto[]> {
@@ -83,11 +84,12 @@ export class UserService {
       name: `${theUser.firstname} ${theUser.lastname}`,
       password,
       email: theUser.email,
+      url: this._configService.get(ConfigEnum.URL_LOGIN)
     };
 
     await this._sendGrid.send({
       to: theUser.email,
-      from: new ConfigService().get(ConfigEnum.BUSINESS_MAIL),
+      from: this._configService.get(ConfigEnum.BUSINESS_MAIL),
       subject: 'Welcome to Fast Order',
       html: emailTemplate(emailInfo),
     });
