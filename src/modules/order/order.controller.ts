@@ -75,4 +75,17 @@ export class OrderController {
   sendToKitchen(@Param('id') id: number) {
     return this._orderService.sendToKitchen(id);
   }
+
+  @ApiOperation({ summary: 'Finish order' })
+  @ApiParam({ name: 'id', description: 'Order Id' })
+  @ApiOkResponse({ type: OrderResponseDto })
+  @ApiConflictResponse({
+    description: 'order is not in correct status',
+  })
+  @ApiNotFoundResponse({ description: 'it happens when order is not found' })
+  @Put('finish/:id')
+  @UseGuards(AuthGuard('jwt'))
+  finish(@Param('id') id: number) {
+    return this._orderService.finish(id);
+  }
 }

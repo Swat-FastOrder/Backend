@@ -35,7 +35,9 @@ export class UserService {
       filter.active ? filter.active : true,
     );
     const roles = await this._roleRepository.find({
-      isAdministrator: true,
+      where: {
+        isAdministrator: true,
+      },
     });
     /**
      * I can't resolve in one query :'(
@@ -48,10 +50,13 @@ export class UserService {
      */
 
     const users = await this._userRepository.find({
-      ...activeEq,
-      role: {
-        id: Not(In(roles.map(r => r.id))),
+      where: {
+        ...activeEq,
+        role: {
+          id: Not(In(roles.map(r => r.id))),
+        },
       },
+      order: { id: 'ASC' },
     });
     return users.map(u => plainToClass(UserResponseDto, u));
   }
