@@ -13,6 +13,8 @@ import { TableModule } from './modules/table/table.module';
 import { OrderDetailModule } from './modules/order-detail/order-detail.module';
 import { RoleModule } from './modules/role/role.module';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { CloudinaryProvider } from './modules/cloudinary/cloudinary.provider';
 
 @Module({
   imports: [
@@ -35,7 +37,9 @@ import { SendGridModule } from '@anchan828/nest-sendgrid';
       dest: './avatars',
     }),
     OrderDetailModule,
+    CloudinaryModule,
   ],
+  providers: [CloudinaryProvider],
 })
 export class AppModule {
   static PORT: number | string;

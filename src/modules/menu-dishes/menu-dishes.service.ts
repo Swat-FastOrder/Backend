@@ -65,6 +65,8 @@ export class MenuDishesService {
   async uploadDishImage(dishId: number, imageUrl: string) {
     this._menuDishesRepository.update(dishId, { imageUrl });
     const dish = await this._menuDishesRepository.findOne(dishId);
+    console.log('Updating the menu url', imageUrl);
+    dish.imageUrl = imageUrl;
     return plainToClass(MenuDishesResponseDto, await dish.save());
   }
 }
