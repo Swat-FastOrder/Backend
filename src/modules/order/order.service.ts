@@ -93,7 +93,13 @@ export class OrderService {
       );
     try {
       order.status = OrderStatus.FINISHED;
-      return plainToClass(OrderResponseDto, await order.save());
+      const theOrder = await order.save();
+      const theTable = await this._tableRepository.findOne({
+        id: theOrder.tableId,
+      });
+      theTable.isAvailable = true;
+      await theTable.save();
+      return plainToClass(OrderResponseDto, theOrder);
     } catch (e) {
       console.error('Cant finish the order', e);
       throw e;
