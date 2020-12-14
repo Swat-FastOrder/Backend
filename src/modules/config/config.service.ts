@@ -24,6 +24,7 @@ export class ConfigService {
         JWT_SECRET: process.env.JWT_SECRET,
         MAIL_KEY: process.env.MAIL_KEY,
         BUSINESS_MAIL: process.env.BUSINESS_MAIL,
+        URL_LOGIN: process.env.URL_LOGIN,
         STORAGE_CLOUD_NAME: process.env.STORAGE_CLOUD_NAME,
         STORAGE_CLOUD_API_KEY: process.env.STORAGE_CLOUD_API_KEY,
         STORAGE_CLOUD_API_SECRET: process.env.STORAGE_CLOUD_API_SECRET,
