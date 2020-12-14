@@ -68,6 +68,11 @@ export class OrderService {
       throw new ConflictException('it_cant_delete_because_order_is_not_empty');
     try {
       await order.remove();
+      const theTable = await this._tableRepository.findOne({
+        id: order.tableId,
+      });
+      theTable.isAvailable = true;
+      await theTable.save();
       return true;
     } catch (e) {
       console.error('Cant delete the order', e);
