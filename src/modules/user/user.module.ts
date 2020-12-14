@@ -5,9 +5,13 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { RoleRepository } from '../role/role.repository';
 import { ConfigService } from '../config/config.service';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository, RoleRepository])],
+  imports: [
+    CloudinaryModule,
+    TypeOrmModule.forFeature([UserRepository, RoleRepository]),
+  ],
   providers: [UserService, ConfigService],
   controllers: [UserController],
 })

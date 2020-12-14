@@ -28,11 +28,15 @@ import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserService } from './user.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @ApiTags('The users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly _userService: UserService) {}
+  constructor(
+    private readonly _userService: UserService,
+    private readonly _cloudinaryService: CloudinaryService,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
@@ -100,21 +104,12 @@ export class UserController {
   @Post('avatar/:userId')
   @UseGuards(AuthGuard('jwt'))
   @ApiOkResponse({ type: UserResponseDto })
-  @UseInterceptors(
-    FileInterceptor('avatar', {
-      storage: diskStorage({
-        destination: './avatars',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  uploadImage(@Param('userId') userId, @UploadedFile() file) {
-    return this._userService.uploadAvatar(Number(userId), `/${file.path}`);
+  @UseInterceptors(FileInterceptor('avatar'))
+  async uploadImage(@Param('userId') userId, @UploadedFile() avatar) {
+    const resultUpload: any = await this._cloudinaryService.upload(avatar);
+    return this._userService.uploadAvatar(
+      Number(userId),
+      `${resultUpload.url}`,
+    );
   }
 }

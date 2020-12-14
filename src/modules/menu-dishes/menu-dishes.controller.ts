@@ -19,11 +19,15 @@ import { MenuDishUpdateDto } from './dtos/menu-dishes-update.dto';
 import { MenuDishesService } from './menu-dishes.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @ApiTags('Menu dishes')
 @Controller('menu-dishes')
 export class MenuDishesController {
-  constructor(private readonly _menuDishesService: MenuDishesService) {}
+  constructor(
+    private readonly _menuDishesService: MenuDishesService,
+    private readonly _cloudinaryService: CloudinaryService,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
@@ -63,24 +67,12 @@ export class MenuDishesController {
   }
 
   @Post(':dishId/image')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './dishes-images',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  uploadImage(@Param('dishId') dishId, @UploadedFile() file) {
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(@Param('dishId') dishId, @UploadedFile() image) {
+    const resultUpload: any = await this._cloudinaryService.upload(image);
     return this._menuDishesService.uploadDishImage(
       Number(dishId),
-      `/${file.path}`,
+      `${resultUpload.url}`,
     );
   }
 }

@@ -26,7 +26,7 @@ export class UserService {
     private readonly _userRepository: UserRepository,
     private readonly _roleRepository: RoleRepository,
     private readonly _sendGrid: SendGridService,
-    private readonly _configService: ConfigService
+    private readonly _configService: ConfigService,
   ) {}
 
   async findAll(filter: UserFilterDto): Promise<UserResponseDto[]> {
@@ -89,7 +89,7 @@ export class UserService {
       name: `${theUser.firstname} ${theUser.lastname}`,
       password,
       email: theUser.email,
-      url: this._configService.get(ConfigEnum.URL_LOGIN)
+      url: this._configService.get(ConfigEnum.URL_LOGIN),
     };
 
     await this._sendGrid.send({
@@ -119,6 +119,7 @@ export class UserService {
   async uploadAvatar(userId: number, avatarUrl: string) {
     const user = await this._userRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('user_not_found');
+    console.log('Updating the avatar url', avatarUrl);
     user.avatar = avatarUrl;
     return plainToClass(UserResponseDto, await user.save());
   }
