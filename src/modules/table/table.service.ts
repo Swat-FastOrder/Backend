@@ -86,6 +86,16 @@ export class TableService {
       throw new ConflictException('table_name_has_already_been_taken');
     }
 
+    if (!tableUpdateDto.isActive) {
+      const currentOrder = await this._orderRepository.findOne({
+        tableId: Equal(table.id),
+        status: Not(OrderStatus.FINISHED),
+      });
+      if (currentOrder) {
+        throw new ConflictException('the_table_cant_be_disabled');
+      }
+    }
+
     table.name = tableUpdateDto.name;
     table.isActive = tableUpdateDto.isActive;
 
